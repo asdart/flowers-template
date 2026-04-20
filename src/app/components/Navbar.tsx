@@ -5,6 +5,7 @@ import svgPaths from "../../imports/svg-55lg8z247s";
 const dropdownLinks = [
   { label: "Gallery", href: "#gallery", description: "Selected blooms" },
   { label: "Services", href: "#services", description: "What we offer" },
+  { label: "Testimonials", href: "#testimonials", description: "Kind words" },
   { label: "Team", href: "#team", description: "Meet the creatives" },
   { label: "Press", href: "#awards", description: "Press & features" },
   { label: "Journal", href: "#journal", description: "Floral articles" },

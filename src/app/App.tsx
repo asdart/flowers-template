@@ -4,6 +4,7 @@ import { Hero } from "./components/Hero";
 import { About } from "./components/About";
 import { Gallery } from "./components/Gallery";
 import { Services } from "./components/Services";
+import { Testimonials } from "./components/Testimonials";
 import { Team } from "./components/Team";
 import { Awards } from "./components/Awards";
 import { Journal } from "./components/Journal";
@@ -21,6 +22,7 @@ export default function App() {
         <About />
         <Gallery />
         <Services />
+        <Testimonials />
         <Team />
         <Awards />
         <Journal />
