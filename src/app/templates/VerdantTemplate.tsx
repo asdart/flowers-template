@@ -5,6 +5,12 @@ import img1 from "../../imports/69d50e85-28ba-4f32-ab47-dd90a5993b5e-WjrTzgrxiZf
 import img2 from "../../imports/a3b82b97-969a-46c6-9f9f-1b7e60527ba1-oQIVn2NTBfjBTc5z6BDTPD4O0dugLa.webp";
 import img3 from "../../imports/3b3331d4-da53-4e0b-96c4-64dc7acffc92-WT4nsouZNxiXigrjikCHzDafAt0qIQ.webp";
 import img4 from "../../imports/2ab68990-ddc0-4542-9fa3-4f534349b24b-MeNeEmlNG1vmTFbuvRKZw3HSgck6Zs.webp";
+import img5 from "../../imports/cc47167a-8596-433b-9a1f-eb84fbff0369-meorDRy6dYTfGTJEzJM7dMRFEr0s2j.webp";
+import img6 from "../../imports/e7c940f8-a673-4a4d-803b-1dc7d23ad25b-n0x9MEweLAo2nfKplAD5v9tXiauCvm.webp";
+import {
+  LuminaInteractiveList,
+  type LuminaSlide,
+} from "../components/ui/lumina-interactive-list";
 
 /* ─────────────────────────────────────────────────────────────
    Verdant — editorial botanical studio in a bold forest palette.
@@ -439,22 +445,62 @@ function VerdantMarquee() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Work — tidy 3-up image grid of recent projects
+   Work — immersive Lumina slider with glass-refraction transitions
    ───────────────────────────────────────────────────────────── */
-const works = [
-  { title: "Thanksgiving Retreat", tag: "Events", image: img1 },
-  { title: "Allison & Gino", tag: "Wedding", image: img2 },
-  { title: "Dodgers Stadium", tag: "Activation", image: img4 },
+const works: LuminaSlide[] = [
+  {
+    tag: "Events",
+    title: "Thanksgiving Retreat",
+    description:
+      "An intimate autumn gathering styled with dried botanicals and heritage tableware.",
+    media: img1,
+  },
+  {
+    tag: "Wedding",
+    title: "Allison & Gino",
+    description:
+      "A late-summer vineyard wedding with cascading garden roses and taper candlelight.",
+    media: img2,
+  },
+  {
+    tag: "Editorial",
+    title: "California Wedding Day",
+    description:
+      "Soft pastels and organic forms reimagined for the beloved bridal publication.",
+    media: img6,
+  },
+  {
+    tag: "Events",
+    title: "Sabrina's Bridal Shower",
+    description:
+      "A playful garden luncheon layered with ribbons, ranunculus and hand-lettered menus.",
+    media: img3,
+  },
+  {
+    tag: "Activation",
+    title: "Dodgers Stadium",
+    description:
+      "A bold floral takeover for opening day, blending heritage blues with summer blooms.",
+    media: img4,
+  },
+  {
+    tag: "Editorial",
+    title: "Archive Rentals",
+    description:
+      "A moody winter editorial pairing vintage glassware with burgundy and moss tones.",
+    media: img5,
+  },
 ];
 
 function VerdantWork() {
   return (
     <section
-      className="w-full px-6 py-28 md:px-16 md:py-40"
+      className="w-full"
       style={{ backgroundColor: BONE, color: INK }}
     >
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-16 flex flex-col gap-6 md:mb-20 md:flex-row md:items-end md:justify-between">
+      {/* Constrained header */}
+      <div className="mx-auto max-w-6xl px-6 pb-16 pt-28 md:px-16 md:pb-20 md:pt-40">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -481,49 +527,26 @@ function VerdantWork() {
             Florals that shape the moments people remember.
           </motion.h2>
         </div>
-
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
-          {works.map((w, i) => (
-            <motion.div
-              key={w.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{
-                duration: 0.9,
-                delay: i * 0.08,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className={`flex flex-col gap-4 ${i === 1 ? "md:mt-16" : ""}`}
-            >
-              <div className="aspect-[4/5] w-full overflow-hidden">
-                <img
-                  src={w.image}
-                  alt={w.title}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="flex items-baseline justify-between px-1">
-                <span
-                  className="text-[13px]"
-                  style={{ ...displayFont, fontStyle: "italic", color: INK }}
-                >
-                  {w.title}
-                </span>
-                <span
-                  className="text-[10px] uppercase tracking-[0.28em]"
-                  style={{
-                    ...bodyFont,
-                    color: "rgba(10,15,12,0.55)",
-                  }}
-                >
-                  {w.tag}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
       </div>
+
+      {/* Full-width, full-height slider */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full overflow-hidden"
+        style={{ height: "100vh" }}
+      >
+          <LuminaInteractiveList
+            slides={works}
+            autoSlideMs={6000}
+            transitionDuration={2.2}
+            accentColor={GREEN}
+            overlayColor="rgba(15, 26, 21, 0.52)"
+            className="h-full"
+          />
+      </motion.div>
     </section>
   );
 }
