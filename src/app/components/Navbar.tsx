@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import svgPaths from "../../imports/svg-55lg8z247s";
 
-export type TemplateId = "wilde" | "orla";
+export type TemplateId = "wilde" | "orla" | "verdant";
 
 const dropdownLinks = [
   { label: "Gallery", href: "#gallery", description: "Selected blooms" },
@@ -22,6 +22,7 @@ const primaryLinks = [
 const templateOptions: { id: TemplateId; label: string; description: string }[] = [
   { id: "wilde", label: "Wilde Flower", description: "Dark editorial · original" },
   { id: "orla", label: "Elegant Blooms", description: "Light, serif-forward studio" },
+  { id: "verdant", label: "Verdant", description: "Bold forest · Fraunces typography" },
 ];
 
 type NavbarProps = {
@@ -134,6 +135,44 @@ const themes: Record<TemplateId, Theme> = {
     mobileActive: "text-[#141217]",
     navLinkFontClass: "font-[var(--font-mono)]",
   },
+  verdant: {
+    text: "text-[#0a0f0c]",
+    brand: {
+      fontClass: "font-[family-name:var(--font-display)]",
+      sizeClass: "text-2xl",
+      trackingClass: "tracking-tight",
+      caseClass: "",
+      label: "Verdant",
+    },
+    pill:
+      "rounded-sm border border-[rgba(10,15,12,0.35)] bg-[rgba(232,230,220,0.9)] text-[11px] font-normal uppercase leading-none tracking-[0.22em] text-[#0a0f0c] backdrop-blur-sm transition-colors hover:bg-[#e8e6dc]",
+    pillArrowFill: "#0a0f0c",
+    divider: "",
+    ctaButton:
+      "rounded-sm border border-[#0a0f0c] bg-[#2f8a3e] px-3.5 py-1.5 text-[11px] font-normal uppercase leading-none tracking-[0.22em] text-[#0a0f0c] transition-colors hover:bg-[#0a0f0c] hover:text-[#e8e6dc]",
+    dropdownPanel:
+      "rounded-sm border border-[rgba(10,15,12,0.15)] bg-[#e8e6dc]/95 shadow-xl backdrop-blur-xl",
+    dropdownLabel:
+      "font-[family-name:var(--font-display)] text-sm text-[#0a0f0c]",
+    dropdownDescription:
+      "text-[11px] leading-tight text-[rgba(10,15,12,0.55)] transition-colors group-hover:text-[#0a0f0c]",
+    dropdownItemHover: "hover:bg-[rgba(10,15,12,0.06)]",
+    dropdownActiveBg: "bg-[rgba(10,15,12,0.08)]",
+    activePill:
+      "rounded-sm bg-[#0a0f0c] px-1.5 py-0.5 text-[9px] font-normal not-italic uppercase tracking-widest text-[#e8e6dc]",
+    mobileButton:
+      "relative z-50 flex h-10 w-10 items-center justify-center rounded-sm border border-[rgba(10,15,12,0.35)] bg-[rgba(232,230,220,0.85)] text-[#0a0f0c] backdrop-blur-sm transition-colors hover:bg-[#e8e6dc]",
+    mobileBar: "bg-[#0a0f0c]",
+    mobileOverlay: "bg-[#e8e6dc]/95 text-[#0a0f0c] backdrop-blur-xl",
+    mobileLinkBorder: "border-[rgba(10,15,12,0.2)]",
+    mobileLabel:
+      "font-[family-name:var(--font-display)] text-3xl text-[#0a0f0c]",
+    mobileSectionLabel:
+      "text-[11px] uppercase tracking-[0.3em] text-[rgba(10,15,12,0.55)]",
+    mobileInactive: "text-[#0a0f0c]/75 hover:text-[#0a0f0c]",
+    mobileActive: "text-[#0a0f0c]",
+    navLinkFontClass: "font-[family-name:var(--font-body)]",
+  },
 };
 
 export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
@@ -187,6 +226,16 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
       ? { fontFamily: "var(--font-script)" }
       : undefined;
 
+  const isLightTemplate = activeTemplate === "orla" || activeTemplate === "verdant";
+  const contactHref =
+    activeTemplate === "orla"
+      ? "#orla-contact"
+      : activeTemplate === "verdant"
+      ? "#verdant-contact"
+      : "#contact";
+  const contactLabel = isLightTemplate ? "Inquire" : "Contact us";
+  const mutedTextClass = isLightTemplate ? "text-[#8a8289]" : "text-white/40";
+
   return (
     <motion.nav
       key={activeTemplate}
@@ -194,7 +243,14 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed left-0 top-0 z-50 flex w-full items-center justify-between px-6 py-6 ${theme.text}`}
-      style={{ color: activeTemplate === "orla" ? "#141217" : undefined }}
+      style={{
+        color:
+          activeTemplate === "orla"
+            ? "#141217"
+            : activeTemplate === "verdant"
+            ? "#0a0f0c"
+            : undefined,
+      }}
     >
       <div
         className={`${theme.brand.fontClass} ${theme.brand.sizeClass} ${theme.brand.trackingClass} ${theme.brand.caseClass}`}
@@ -339,10 +395,10 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
         </div>
 
         <a
-          href={activeTemplate === "orla" ? "#orla-contact" : "#contact"}
+          href={contactHref}
           className={`ml-1 ${theme.ctaButton}`}
         >
-          {activeTemplate === "orla" ? "Inquire" : "Contact us"}
+          {contactLabel}
         </a>
       </div>
 
@@ -396,11 +452,7 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
                   >
                     <span className={theme.mobileLabel}>{link.label}</span>
                     <span
-                      className={`text-xs uppercase tracking-widest transition-opacity ${
-                        activeTemplate === "orla"
-                          ? "text-[#8a8289]"
-                          : "text-white/40"
-                      }`}
+                      className={`text-xs uppercase tracking-widest transition-opacity ${mutedTextClass}`}
                     >
                       →
                     </span>
@@ -433,11 +485,7 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
                           {tpl.label}
                         </span>
                         <span
-                          className={`text-[11px] uppercase tracking-widest ${
-                            activeTemplate === "orla"
-                              ? "text-[#8a8289]"
-                              : "text-white/40"
-                          }`}
+                          className={`text-[11px] uppercase tracking-widest ${mutedTextClass}`}
                         >
                           {isActive ? "Active" : "Switch →"}
                         </span>
@@ -448,12 +496,12 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
               </div>
 
               <a
-                href={activeTemplate === "orla" ? "#orla-contact" : "#contact"}
+                href={contactHref}
                 onClick={() => setMobileOpen(false)}
                 className={`mt-auto text-center ${theme.ctaButton}`}
                 style={{ paddingTop: 12, paddingBottom: 12 }}
               >
-                {activeTemplate === "orla" ? "Inquire" : "Contact us"}
+                {contactLabel}
               </a>
             </motion.div>
           </motion.div>

@@ -12,6 +12,7 @@ import { Journal } from "./components/Journal";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { OrlaTemplate } from "./templates/OrlaTemplate";
+import { VerdantTemplate } from "./templates/VerdantTemplate";
 
 function WildeFlowerTemplate() {
   return (
@@ -48,7 +49,13 @@ export default function App() {
       {template === "wilde" ? <CustomCursor /> : null}
       <Navbar activeTemplate={template} onTemplateChange={handleTemplateChange} />
 
-      {template === "wilde" ? <WildeFlowerTemplate /> : <OrlaTemplate />}
+      {template === "wilde" ? (
+        <WildeFlowerTemplate />
+      ) : template === "verdant" ? (
+        <VerdantTemplate />
+      ) : (
+        <OrlaTemplate />
+      )}
     </div>
   );
 }

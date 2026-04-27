@@ -639,11 +639,21 @@ function OrlaWork() {
       style={{ backgroundColor: BG, color: INK }}
     >
       <div className="mx-auto max-w-5xl flex flex-col items-center gap-5">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center text-[11px] uppercase tracking-[0.3em]"
+          style={{ fontFamily: "var(--font-mono)", color: ACCENT }}
+        >
+          03 — Our Work
+        </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           className="text-center font-serif leading-[1.05] tracking-tight"
           style={{ fontSize: "clamp(2.25rem, 5.2vw, 4.25rem)", color: INK }}
         >
