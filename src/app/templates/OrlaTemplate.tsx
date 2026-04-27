@@ -201,13 +201,13 @@ function OrlaAbout({ targetRef, floating }: OrlaAboutProps) {
           </motion.div>
         )}
 
-        {/* Right image */}
+        {/* Right image — bottom-aligned in column so it matches the left 4/5 image */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="md:col-span-6 md:col-start-7 md:-mt-16"
+          className="flex min-h-0 flex-col justify-end md:col-span-6 md:col-start-7 md:-mt-16 md:h-full md:self-stretch"
         >
           <img src={img1} alt="Rich floral composition" className="aspect-[4/5] w-full object-cover" />
         </motion.div>
