@@ -13,6 +13,8 @@ import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { OrlaTemplate } from "./templates/OrlaTemplate";
 import { VerdantTemplate } from "./templates/VerdantTemplate";
+import { MinimalTemplate } from "./templates/MinimalTemplate";
+import { PoisonTemplate } from "./templates/PoisonTemplate";
 
 function WildeFlowerTemplate() {
   return (
@@ -53,6 +55,10 @@ export default function App() {
         <WildeFlowerTemplate />
       ) : template === "verdant" ? (
         <VerdantTemplate />
+      ) : template === "minimal" ? (
+        <MinimalTemplate />
+      ) : template === "poison" ? (
+        <PoisonTemplate />
       ) : (
         <OrlaTemplate />
       )}

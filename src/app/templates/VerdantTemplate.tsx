@@ -13,14 +13,14 @@ import {
 } from "../components/ui/lumina-interactive-list";
 
 /* ─────────────────────────────────────────────────────────────
-   Verdant — editorial botanical studio in a bold forest palette.
+   Verdant — editorial botanical studio in a bold orange palette.
    Typography: Fraunces (display) / DM Sans (body).
    ───────────────────────────────────────────────────────────── */
-const GREEN = "#2f8a3e";
-const FOREST = "#0f1a15";
-const CREAM = "#e8e6dc";
-const INK = "#0a0f0c";
-const BONE = "#faf8f2";
+const GREEN = "#d45c1a";   /* vibrant orange — replaces forest green */
+const FOREST = "#1a0e08";  /* deep dark brown — replaces near-black forest */
+const CREAM = "#f0e8dc";   /* warm cream — same lightness, orange undertone */
+const INK = "#140a05";     /* near-black with warm brown cast */
+const BONE = "#fdf7f2";    /* warm bone white — slight orange tint */
 
 const displayFont = { fontFamily: "var(--font-display)" };
 const bodyFont = { fontFamily: "var(--font-body)" };
@@ -63,15 +63,15 @@ function VerdantHero() {
       style={{ backgroundColor: GREEN, color: INK }}
     >
       <div className="relative mx-auto flex min-h-screen max-w-[1400px] flex-col justify-between px-6 pb-0 pt-32 md:px-12 md:pt-40">
-        {/* Lead statement */}
+        {/* Lead statement — Fraunces 48px / 56px, max-w 873px (Figma) */}
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-[1100px] text-center leading-[1.05] tracking-tight"
+          className="mx-auto max-w-[873px] text-center leading-[1.1667] tracking-[-0.02em]"
           style={{
             ...displayFont,
-            fontSize: "clamp(2rem, 4.8vw, 4.25rem)",
+            fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
             fontWeight: 400,
             color: INK,
           }}
@@ -81,7 +81,7 @@ function VerdantHero() {
           palettes, and unforgettable moments.
         </motion.h1>
 
-        {/* Giant wordmark at the bottom, slightly cropped (Cedar-style) */}
+        {/* Giant wordmark at the bottom, slightly cropped */}
         <div className="relative -mb-8 mt-16 w-full md:-mb-16 md:mt-24">
           <motion.h2
             initial={{ opacity: 0, y: 60 }}
@@ -91,10 +91,10 @@ function VerdantHero() {
               delay: 0.25,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="select-none whitespace-nowrap text-center leading-[0.78] tracking-[-0.02em]"
+            className="select-none whitespace-nowrap text-center leading-[1] tracking-[-0.021em]"
             style={{
               ...displayFont,
-              fontSize: "clamp(6rem, 22vw, 20rem)",
+              fontSize: "clamp(6rem, 22vw, 18.5rem)",
               fontWeight: 600,
               color: INK,
             }}
@@ -317,7 +317,7 @@ function VerdantMission() {
   return (
     <section
       className="relative w-full overflow-hidden px-6 py-28 md:px-16 md:py-40"
-      style={{ backgroundColor: CREAM, color: INK }}
+      style={{ backgroundColor: "rgba(242, 219, 207, 1)", color: INK }}
     >
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 md:grid-cols-12 md:gap-12">
         {/* Copy column */}
@@ -409,7 +409,7 @@ function VerdantMarquee() {
   return (
     <div
       className="w-full overflow-hidden py-10 md:py-14"
-      style={{ backgroundColor: CREAM }}
+      style={{ backgroundColor: BONE }}
     >
       <motion.div
         className="flex whitespace-nowrap"
@@ -543,7 +543,7 @@ function VerdantWork() {
             autoSlideMs={6000}
             transitionDuration={2.2}
             accentColor={GREEN}
-            overlayColor="rgba(15, 26, 21, 0.52)"
+            overlayColor="rgba(26, 14, 8, 0.52)"
             className="h-full"
           />
       </motion.div>
@@ -729,7 +729,7 @@ function VerdantFooter() {
   return (
     <footer
       className="relative w-full overflow-hidden px-6 pt-20 md:px-16 md:pt-28"
-      style={{ backgroundColor: BONE, color: INK }}
+      style={{ backgroundColor: "rgba(242, 219, 207, 1)", color: INK }}
     >
       <div className="mx-auto flex max-w-6xl flex-col gap-16">
         {/* Top block: statement + link columns */}
