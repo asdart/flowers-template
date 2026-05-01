@@ -947,14 +947,16 @@ function PoisonFeature() {
 
    Reveal animation (single composed entrance):
      · Orchid "blooms in" — scale 1.06 → 1, opacity 0 → 0.42,
-       1.8s eased.
+       1.8s eased. After it lands, drifts ±140px on scroll.
      · Header label slides in from the left, counter from the
-       right (350-450ms staggered).
-     · Card opens via an iris clip-path reveal — inset(50% 30%)
-       → inset(0%) sweeping outward from the center, 1.4s eased
-       at 550ms delay. The quote and author info reveal as the
-       clip-path opens (no nested stagger).
-     · Arrow buttons fade up after the card has settled.
+       right (300-400ms staggered).
+     · Card frame draws as four sequential 1px strokes — top
+       (0.6-1.15s), right (1.15-1.7s), bottom (1.7-2.25s),
+       left (2.25-2.8s). 0.55s per stroke handing off corner-
+       to-corner so the perimeter feels inked in by hand.
+     · Quote zone fades in at 2.55s, footer (author + arrows)
+       fades up at 2.75s — the empty frame fills from inside
+       once the border has closed.
 
    Carousel:
      · 5 entries — matches the 01/05 page counter from Figma.
@@ -1137,13 +1139,14 @@ function PoisonTestimonials() {
     return () => window.removeEventListener("keydown", handler);
   }, [isFirst, isLast]);
 
-  /* Same parallax gesture as PoisonSelectedWork — coherent page
-     language. The orchid drifts ±80px across the scroll runway. */
+  /* Parallax — orchid drifts ±140px across the scroll runway,
+     a more pronounced version of PoisonSelectedWork's gesture so
+     the line work feels alive behind the carousel. */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const illustrationY = useTransform(scrollYProgress, [0, 1], [-80, 80]);
+  const illustrationY = useTransform(scrollYProgress, [0, 1], [-140, 140]);
 
   /* Direction-aware Y shifts — going next: outgoing slides up,
      incoming rises from below. Going prev reverses both. */
@@ -1165,31 +1168,43 @@ function PoisonTestimonials() {
           minHeight: "100vh",
         }}
       >
-        {/* Background orchid — mix-blend-multiply prints the line
-            work darkly into the cream. Blooms in: scale 1.06 → 1
-            with opacity 0 → 0.42, then drifts ±80px on scroll. */}
-        <motion.div
+        {/* Background orchid — split into two layers so the
+            Tailwind centering transform (translate -50%) doesn't
+            collide with motion's parallax / scale transforms.
+
+            · Outer wrapper: pure CSS centering. Static.
+            · Inner motion: parallax y (±140px on scroll), bloom-in
+              scale 1.06 → 1 + opacity 0 → 0.42 once on enter,
+              mix-blend-multiply so the line work prints into
+              the cream. */}
+        <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
           style={{
             width: "min(1440px, 100%)",
             aspectRatio: "1440 / 960",
-            mixBlendMode: "multiply",
-            y: illustrationY,
-            willChange: "transform, opacity",
           }}
-          initial={{ opacity: 0, scale: 1.06 }}
-          whileInView={{ opacity: 0.42, scale: 1 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <img
-            src={poisonOrchidCarousel}
-            alt=""
-            className="h-full w-full object-cover"
-            draggable={false}
-          />
-        </motion.div>
+          <motion.div
+            className="relative h-full w-full"
+            style={{
+              mixBlendMode: "multiply",
+              y: illustrationY,
+              willChange: "transform, opacity",
+            }}
+            initial={{ opacity: 0, scale: 1.06 }}
+            whileInView={{ opacity: 0.42, scale: 1 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <img
+              src={poisonOrchidCarousel}
+              alt=""
+              className="h-full w-full object-cover"
+              draggable={false}
+            />
+          </motion.div>
+        </div>
 
         {/* Inner content wrapper — flex 1 0 0 capped at 480px tall
             (Figma 12457:45320). Header + card stack with 16px gap. */}
@@ -1269,30 +1284,122 @@ function PoisonTestimonials() {
             </motion.div>
           </div>
 
-          {/* Card — iris clip-path reveal. Opens from inset(50% 30%)
-              to inset(0%) sweeping outward from the center, like a
-              petal unfolding. Quote and footer become visible as
-              the clip opens; no nested entrance staggers needed. */}
+          {/* Card — perimeter draws as four sequential 1px strokes:
+              top (left → right), right (top → bottom), bottom (right
+              → left), left (bottom → top). The frame builds in a
+              continuous loop around the card; content fades in after
+              the loop closes. The card itself has no CSS border —
+              the four `<motion.span>` strokes below are the border. */}
           <motion.div
             className="relative flex w-full flex-col items-stretch justify-between overflow-hidden"
             style={{
               flex: "1 1 0",
               backgroundColor: CREAM,
-              border: "1px solid rgba(20, 10, 5, 0.2)",
               padding: 24,
               minHeight: 0,
-              willChange: "clip-path, opacity",
             }}
-            initial={{ clipPath: "inset(50% 30% 50% 30%)", opacity: 0 }}
-            whileInView={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
-            viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 1.4, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
           >
+            {/* Top stroke — origin top-left, scaleX 0 → 1 (draws
+                left → right). Explicit display:block + percentage
+                origin avoids any inline-span + keyword origin
+                inconsistencies. */}
+            <motion.span
+              aria-hidden
+              className="pointer-events-none"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 1,
+                display: "block",
+                backgroundColor: "rgba(20, 10, 5, 0.2)",
+                transformOrigin: "0% 0%",
+                willChange: "transform",
+                zIndex: 2,
+              }}
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 0.55, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            />
+            {/* Right stroke — origin top-right, scaleY 0 → 1
+                (draws top → bottom). */}
+            <motion.span
+              aria-hidden
+              className="pointer-events-none"
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                width: 1,
+                display: "block",
+                backgroundColor: "rgba(20, 10, 5, 0.2)",
+                transformOrigin: "100% 0%",
+                willChange: "transform",
+                zIndex: 2,
+              }}
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 0.55, delay: 1.15, ease: [0.16, 1, 0.3, 1] }}
+            />
+            {/* Bottom stroke — origin bottom-right, scaleX 0 → 1
+                (draws right → left). */}
+            <motion.span
+              aria-hidden
+              className="pointer-events-none"
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: 1,
+                display: "block",
+                backgroundColor: "rgba(20, 10, 5, 0.2)",
+                transformOrigin: "100% 100%",
+                willChange: "transform",
+                zIndex: 2,
+              }}
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 0.55, delay: 1.7, ease: [0.16, 1, 0.3, 1] }}
+            />
+            {/* Left stroke — origin bottom-left, scaleY 0 → 1
+                (draws bottom → top). */}
+            <motion.span
+              aria-hidden
+              className="pointer-events-none"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                bottom: 0,
+                width: 1,
+                display: "block",
+                backgroundColor: "rgba(20, 10, 5, 0.2)",
+                transformOrigin: "0% 100%",
+                willChange: "transform",
+                zIndex: 2,
+              }}
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 0.55, delay: 2.25, ease: [0.16, 1, 0.3, 1] }}
+            />
+
             {/* Quote zone — fills remaining card height. Text
-                aligns top within the available space. */}
-            <div
+                aligns top within the available space. Fades in
+                once after the border has finished drawing. */}
+            <motion.div
               className="relative w-full"
               style={{ flex: "1 1 auto", minHeight: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 0.7, delay: 2.55, ease: [0.16, 1, 0.3, 1] }}
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p
@@ -1318,14 +1425,19 @@ function PoisonTestimonials() {
                   &ldquo;{current.quote}&rdquo;
                 </motion.p>
               </AnimatePresence>
-            </div>
+            </motion.div>
 
             {/* Footer row — author block (left) / arrow pair (right).
-                Author block crossfades on slide change; arrows fade
-                in once after the card has settled. */}
-            <div
+                Author block crossfades on slide change. The whole row
+                fades up once the border has finished drawing, so the
+                empty frame fills bottom-up after the perimeter closes. */}
+            <motion.div
               className="relative flex w-full items-end justify-between"
               style={{ gap: 24, marginTop: 16 }}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 0.8, delay: 2.75, ease: [0.16, 1, 0.3, 1] }}
             >
               <div
                 style={{
@@ -1377,13 +1489,7 @@ function PoisonTestimonials() {
                 </AnimatePresence>
               </div>
 
-              <motion.div
-                className="relative flex items-center"
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-15%" }}
-                transition={{ duration: 0.7, delay: 1.45, ease: [0.16, 1, 0.3, 1] }}
-              >
+              <div className="relative flex items-center">
                 <TestimonialNavButton
                   direction="left"
                   onClick={goPrev}
@@ -1395,8 +1501,8 @@ function PoisonTestimonials() {
                   disabled={isLast}
                   hideLeftBorder
                 />
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
