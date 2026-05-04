@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
+  useInView,
   useScroll,
   useTransform,
 } from "motion/react";
@@ -152,6 +153,8 @@ function TestimonialNavButton({
 
 export function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { once: true, amount: 0.25 });
+
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
 
@@ -194,6 +197,12 @@ export function Testimonials() {
   const slideEnterY = direction === 1 ? 14 : -14;
   const slideExitY = direction === 1 ? -14 : 14;
 
+  const fadeUp = (delay = 0) => ({
+    initial: { opacity: 0, y: 20 },
+    animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
+    transition: { duration: 0.7, delay, ease: EASE_PRIMARY },
+  });
+
   return (
     <section
       id="poison-testimonials"
@@ -225,10 +234,8 @@ export function Testimonials() {
               y: illustrationY,
               willChange: "transform, opacity",
             }}
-            initial={{ opacity: 0, scale: 1.06 }}
-            whileInView={{ opacity: 0.42, scale: 1 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 1.8, ease: EASE_PRIMARY }}
+            animate={inView ? { opacity: 0.42, scale: 1 } : { opacity: 0, scale: 1.06 }}
+            transition={{ duration: 1.4, ease: EASE_PRIMARY }}
           >
             <img
               src={poisonOrchidCarousel}
@@ -248,10 +255,7 @@ export function Testimonials() {
             style={{ whiteSpace: "nowrap" }}
           >
             <motion.p
-              initial={{ opacity: 0, x: -16 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.9, delay: 0.3, ease: EASE_PRIMARY }}
+              {...fadeUp(0)}
               style={{
                 ...displayFont,
                 fontWeight: 100,
@@ -267,10 +271,7 @@ export function Testimonials() {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, x: 16 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.9, delay: 0.4, ease: EASE_PRIMARY }}
+              {...fadeUp(0.1)}
               style={{
                 ...bodyFont,
                 fontSize: 14,
@@ -311,106 +312,19 @@ export function Testimonials() {
           </div>
 
           <motion.div
+            {...fadeUp(0.2)}
             className="relative flex w-full flex-col items-stretch justify-between overflow-hidden"
             style={{
               flex: "1 1 0",
               backgroundColor: CREAM,
+              border: `1px solid ${HAIRLINE}`,
               padding: 24,
               minHeight: 0,
             }}
           >
-            {/* Top stroke (left → right). */}
-            <motion.span
-              aria-hidden
-              className="pointer-events-none"
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 1,
-                display: "block",
-                backgroundColor: HAIRLINE,
-                transformOrigin: "0% 0%",
-                willChange: "transform",
-                zIndex: 2,
-              }}
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.55, delay: 0.6, ease: EASE_PRIMARY }}
-            />
-            {/* Right stroke (top → bottom). */}
-            <motion.span
-              aria-hidden
-              className="pointer-events-none"
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                bottom: 0,
-                width: 1,
-                display: "block",
-                backgroundColor: HAIRLINE,
-                transformOrigin: "100% 0%",
-                willChange: "transform",
-                zIndex: 2,
-              }}
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.55, delay: 1.15, ease: EASE_PRIMARY }}
-            />
-            {/* Bottom stroke (right → left). */}
-            <motion.span
-              aria-hidden
-              className="pointer-events-none"
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: 1,
-                display: "block",
-                backgroundColor: HAIRLINE,
-                transformOrigin: "100% 100%",
-                willChange: "transform",
-                zIndex: 2,
-              }}
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.55, delay: 1.7, ease: EASE_PRIMARY }}
-            />
-            {/* Left stroke (bottom → top). */}
-            <motion.span
-              aria-hidden
-              className="pointer-events-none"
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                bottom: 0,
-                width: 1,
-                display: "block",
-                backgroundColor: HAIRLINE,
-                transformOrigin: "0% 100%",
-                willChange: "transform",
-                zIndex: 2,
-              }}
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.55, delay: 2.25, ease: EASE_PRIMARY }}
-            />
-
-            <motion.div
+            <div
               className="relative w-full"
               style={{ flex: "1 1 auto", minHeight: 0 }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.7, delay: 2.55, ease: EASE_PRIMARY }}
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p
@@ -436,15 +350,11 @@ export function Testimonials() {
                   &ldquo;{current.quote}&rdquo;
                 </motion.p>
               </AnimatePresence>
-            </motion.div>
+            </div>
 
-            <motion.div
+            <div
               className="relative flex w-full items-end justify-between"
               style={{ gap: 24, marginTop: 16 }}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.8, delay: 2.75, ease: EASE_PRIMARY }}
             >
               <div
                 style={{
@@ -513,7 +423,7 @@ export function Testimonials() {
                   hideLeftBorder
                 />
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>

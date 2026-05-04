@@ -172,47 +172,6 @@ export function Press() {
         trigger="view"
       />
 
-      {/* Trailing micro-row matching the header rhythm. */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-15%" }}
-        transition={{ duration: 0.9, delay: 0.7, ease: EASE_PRIMARY }}
-        className="relative mx-auto flex items-baseline justify-between"
-        style={{
-          maxWidth: 1440,
-          padding:
-            "clamp(24px, 2.4vw, 32px) clamp(24px, 5.6vw, 80px) clamp(40px, 4.4vw, 64px)",
-        }}
-      >
-        <p
-          style={{
-            ...bodyFont,
-            fontSize: 12,
-            lineHeight: "20px",
-            fontWeight: 300,
-            color: INK,
-            opacity: 0.6,
-            margin: 0,
-          }}
-        >
-          Editorial coverage 2018 — present.
-        </p>
-        <a
-          href="#poison-contact"
-          style={{
-            ...bodyFont,
-            fontSize: 12,
-            lineHeight: "20px",
-            fontWeight: 300,
-            color: INK,
-            textDecoration: "none",
-            borderBottom: `1px solid ${HAIRLINE}`,
-          }}
-        >
-          Press kit →
-        </a>
-      </motion.div>
     </section>
   );
 }

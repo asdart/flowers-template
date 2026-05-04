@@ -5,7 +5,6 @@ import poisonContactHero from "../../../../imports/poison-bloom-contact-hero.png
 import { DualClipWordmark } from "../components/DualClipWordmark";
 import {
   CREAM,
-  EASE_OVERSHOOT,
   EASE_PRIMARY,
   HAIRLINE,
   INK,
@@ -20,65 +19,63 @@ import { pv } from "../utils";
 /* ═══════════════════════════════════════════════════════════════
    CONTACT — Closing bookend.
 
-   Matches Figma "Global sections / Contact form" (12511:7560).
+   Matches Figma "Global sections / Contact form" (12529:7267).
 
-   The dual-clip motif is anchored to the LEFT side of the stage:
-   a 411×600 floral rectangle sits with its left edge at x=80 of
-   the 1374×800 reference frame. "Get in" and "Touch" stack
-   vertically with their right halves extending past the image's
-   right edge — INK on the cream margin, CREAM where the glyphs
-   cross the floral. This frees the right side of the section as
-   open canvas, and the contact form drops into that canvas
-   right-aligned to the section's 80-px gutter.
+   Layout:
+   · Floral 411×600 anchored to the LEFT side at x=80, top=180 of
+     the 1374×800 reference frame.
+   · "Get in" / "Touch" stack vertically with their right halves
+     extending past the image's right edge — INK on the cream
+     margin, CREAM where the glyphs cross the floral.
+   · Right canvas hosts the form column: top=292, width=410,
+     anchored at 58.33% of the section per Figma.
 
-   Form: hairline-underline inputs (border-bottom only, focus
-   ring TEAL), four project-type toggle chips, textarea, TEAL
-   submit button with overshoot spring entrance. Stagger order
-   matches reading order so each field lands top-to-bottom in
-   sync with the user's eye scan.
+   Form (per Figma):
+   · 3 fields only — Name, Email, Message (textarea). No
+     project-type chips. Each field is a stacked label + input
+     with a single hairline along the bottom of the entire
+     field. Labels use Fraunces light 16px; values use Open Sans.
+   · Submit is a flat TEAL rectangle, "Send message" in white at
+     12px, 8/16 padding.
    ═══════════════════════════════════════════════════════════════ */
 
 /* ─── Figma reference frame (1374 × 800) ──────────────────────── */
-const SECTION_H = 800;
 const IMG_LEFT = 80;
-const IMG_TOP = 100;
 const IMG_W = 411;
 const IMG_H = 600;
 
-/* "Get in" anchored at center-x 442 / top 431. "Touch" anchored
-   at center-x 550 / top 560. Both apply translateX(-50%) at the
-   anchor so the wordmark is horizontally centred on its
-   coordinate. Right halves of both extend past the image's right
-   edge (491 = IMG_LEFT + IMG_W) so the colour flips back to ink
-   on the cream margin. */
-const GET_IN_CX = 442;
-const GET_IN_TOP = 431;
-const TOUCH_CX = 550;
-const TOUCH_TOP = 560;
+/* Wordmark anchor x-centres (in Figma canvas px). */
+const GET_IN_CX = 444;
+const TOUCH_CX = 540;
+
+/* Wordmark offsets from the image's top edge (in Figma canvas px).
+   Stored as offsets rather than absolute positions so they stay
+   correct regardless of how we reposition the image vertically. */
+const GET_IN_OFFSET_FROM_IMG_TOP = 251; // 431 − 180
+const TOUCH_OFFSET_FROM_IMG_TOP = 380;  // 560 − 180
 
 const WORDMARK_FONT = 152;
 
-const SECTION_H_VW = pv(SECTION_H);
 const IMG_LEFT_VW = pv(IMG_LEFT);
-const IMG_TOP_VW = pv(IMG_TOP);
 const IMG_W_VW = pv(IMG_W);
 const IMG_H_VW = pv(IMG_H);
 const GET_IN_CX_VW = pv(GET_IN_CX);
-const GET_IN_TOP_VW = pv(GET_IN_TOP);
 const TOUCH_CX_VW = pv(TOUCH_CX);
-const TOUCH_TOP_VW = pv(TOUCH_TOP);
 
-/* Form column geometry — top edge anchored to the image's top so
-   the form and the photograph share a horizontal sightline. The
-   right edge keeps an 80-px gutter (matching the image's left
-   gutter), and width is sized to leave generous breathing room
-   between the wordmark's right extent and the form's left edge. */
-const FORM_TOP = 120;
-const FORM_RIGHT = 80;
-const FORM_WIDTH = 520;
+/* Centre the image vertically inside a 100vh stage.
+   calc() happily mixes vh and vw — both are valid CSS length units. */
+const IMG_TOP_CENTERED = `calc(50vh - ${IMG_H_VW} / 2)`;
 
-const FORM_TOP_VW = pv(FORM_TOP);
-const FORM_RIGHT_VW = pv(FORM_RIGHT);
+/* Wordmark absolute tops — image's centred top + offset within image. */
+const GET_IN_OFFSET_VW = pv(GET_IN_OFFSET_FROM_IMG_TOP);
+const TOUCH_OFFSET_VW = pv(TOUCH_OFFSET_FROM_IMG_TOP);
+const GET_IN_TOP_CENTERED = `calc(${IMG_TOP_CENTERED} + ${GET_IN_OFFSET_VW})`;
+const TOUCH_TOP_CENTERED = `calc(${IMG_TOP_CENTERED} + ${TOUCH_OFFSET_VW})`;
+
+/* Form column geometry — right canvas, width matches Figma, centered
+   vertically via top:50% + translateY(-50%). */
+const FORM_LEFT_PCT = 58.33;
+const FORM_WIDTH = 410;
 const FORM_WIDTH_VW = pv(FORM_WIDTH);
 
 const wordStyle: CSSProperties = {
@@ -93,25 +90,19 @@ const wordStyle: CSSProperties = {
   whiteSpace: "nowrap",
 };
 
-const PROJECT_TYPES = [
-  "Wedding",
-  "Brand activation",
-  "Set design",
-  "Other",
-] as const;
+/* ─── Field primitives ───────────────────────────────────────── */
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
     <span
       style={{
         ...displayFont,
-        fontSize: 13,
-        lineHeight: "20px",
-        fontWeight: 200,
-        letterSpacing: "0.08em",
+        fontSize: 16,
+        lineHeight: "24px",
+        fontWeight: 300,
+        letterSpacing: "-1px",
         fontVariationSettings: SOFT_WONK,
         color: INK,
-        textTransform: "uppercase",
       }}
     >
       {children}
@@ -119,61 +110,116 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function HairlineInput({
-  type = "text",
-  name,
-  placeholder,
-  required,
-  ...rest
-}: React.InputHTMLAttributes<HTMLInputElement> & { name: string }) {
-  const [focused, setFocused] = useState(false);
+const inputStyle: CSSProperties = {
+  ...bodyFont,
+  width: "100%",
+  background: "transparent",
+  border: "none",
+  outline: "none",
+  padding: 0,
+  fontSize: 14,
+  lineHeight: "24px",
+  color: INK,
+  fontWeight: 300,
+};
+
+function HairlineField({
+  label,
+  children,
+  multiline = false,
+  focused,
+}: {
+  label: string;
+  children: React.ReactNode;
+  multiline?: boolean;
+  focused: boolean;
+}) {
   return (
-    <input
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      required={required}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
+    <label
       style={{
-        ...bodyFont,
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
         width: "100%",
-        background: "transparent",
-        border: "none",
-        outline: "none",
+        paddingBottom: multiline ? 48 : 8,
         borderBottom: `1px solid ${focused ? TEAL : HAIRLINE}`,
-        padding: "10px 0",
-        fontSize: 15,
-        lineHeight: "22px",
-        color: INK,
-        fontWeight: 300,
         transition: "border-color 240ms ease",
       }}
-      {...rest}
-    />
+    >
+      <FieldLabel>{label}</FieldLabel>
+      {children}
+    </label>
+  );
+}
+
+function TextField({
+  label,
+  name,
+  type = "text",
+  placeholder,
+  required,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  placeholder: string;
+  required?: boolean;
+}) {
+  const [focused, setFocused] = useState(false);
+  return (
+    <HairlineField label={label} focused={focused}>
+      <input
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        required={required}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={inputStyle}
+      />
+    </HairlineField>
+  );
+}
+
+function TextAreaField({
+  label,
+  name,
+  placeholder,
+  rows = 1,
+}: {
+  label: string;
+  name: string;
+  placeholder: string;
+  rows?: number;
+}) {
+  const [focused, setFocused] = useState(false);
+  return (
+    <HairlineField label={label} focused={focused} multiline>
+      <textarea
+        name={name}
+        rows={rows}
+        placeholder={placeholder}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{
+          ...inputStyle,
+          resize: "none",
+          fontFamily: bodyFont.fontFamily,
+        }}
+      />
+    </HairlineField>
   );
 }
 
 /* ─── Form (shared between desktop right-column and mobile stack) ─── */
 
 function ContactFormBody({
-  type,
-  setType,
   submitted,
   onSubmit,
-  compact = false,
 }: {
-  type: typeof PROJECT_TYPES[number];
-  setType: (t: typeof PROJECT_TYPES[number]) => void;
   submitted: boolean;
   onSubmit: (e: React.FormEvent) => void;
-  /* Compact mode tightens the gap between fields when the form
-     lives inside the desktop right column (where vertical room
-     is bounded by the image height); the mobile stack uses the
-     looser default gap. */
-  compact?: boolean;
 }) {
-  const fieldGap = compact ? 18 : 24;
   return (
     <motion.form
       onSubmit={onSubmit}
@@ -183,145 +229,88 @@ function ContactFormBody({
       variants={{
         hidden: {},
         visible: {
-          transition: { staggerChildren: 0.08, delayChildren: 0.6 },
+          transition: { staggerChildren: 0.1, delayChildren: 0.5 },
         },
       }}
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: fieldGap,
+        gap: 32,
         width: "100%",
       }}
     >
-      <motion.label
-        variants={{
-          hidden: { opacity: 0, y: 16 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.7, ease: EASE_PRIMARY },
-          },
-        }}
-        style={{ display: "flex", flexDirection: "column", gap: 4 }}
-      >
-        <FieldLabel>Name</FieldLabel>
-        <HairlineInput name="name" placeholder="Your full name" required />
-      </motion.label>
-
-      <motion.label
-        variants={{
-          hidden: { opacity: 0, y: 16 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.7, ease: EASE_PRIMARY },
-          },
-        }}
-        style={{ display: "flex", flexDirection: "column", gap: 4 }}
-      >
-        <FieldLabel>Email</FieldLabel>
-        <HairlineInput
-          name="email"
-          type="email"
-          placeholder="hello@yourdomain.com"
-          required
-        />
-      </motion.label>
-
-      <motion.fieldset
-        variants={{
-          hidden: { opacity: 0, y: 16 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.7, ease: EASE_PRIMARY },
-          },
-        }}
+      <div
         style={{
-          border: "none",
-          padding: 0,
-          margin: 0,
           display: "flex",
           flexDirection: "column",
-          gap: 10,
+          gap: 34,
+          width: "100%",
         }}
       >
-        <legend style={{ padding: 0, margin: 0 }}>
-          <FieldLabel>Project type</FieldLabel>
-        </legend>
-        <div className="flex flex-wrap" style={{ gap: 8 }}>
-          {PROJECT_TYPES.map((option) => {
-            const active = type === option;
-            return (
-              <button
-                key={option}
-                type="button"
-                onClick={() => setType(option)}
-                style={{
-                  ...bodyFont,
-                  cursor: "pointer",
-                  padding: "6px 14px",
-                  fontSize: 13,
-                  lineHeight: "20px",
-                  fontWeight: 300,
-                  color: active ? "#fff" : INK,
-                  backgroundColor: active ? INK : "transparent",
-                  border: `1px solid ${active ? INK : HAIRLINE}`,
-                  transition:
-                    "background-color 240ms ease, color 240ms ease, border-color 240ms ease",
-                }}
-              >
-                {option}
-              </button>
-            );
-          })}
-        </div>
-      </motion.fieldset>
-
-      <motion.label
-        variants={{
-          hidden: { opacity: 0, y: 16 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.7, ease: EASE_PRIMARY },
-          },
-        }}
-        style={{ display: "flex", flexDirection: "column", gap: 4 }}
-      >
-        <FieldLabel>Tell us about your event</FieldLabel>
-        <textarea
-          name="message"
-          rows={compact ? 3 : 4}
-          placeholder="Date, location, mood, anything that comes to mind."
-          style={{
-            ...bodyFont,
-            width: "100%",
-            background: "transparent",
-            border: "none",
-            outline: "none",
-            borderBottom: `1px solid ${HAIRLINE}`,
-            padding: "10px 0",
-            fontSize: 15,
-            lineHeight: "22px",
-            color: INK,
-            fontWeight: 300,
-            resize: "vertical",
-            fontFamily: bodyFont.fontFamily,
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 16 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.7, ease: EASE_PRIMARY },
+            },
           }}
-        />
-      </motion.label>
+        >
+          <TextField
+            label="Name"
+            name="name"
+            placeholder="Your full name here"
+            required
+          />
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 16 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.7, ease: EASE_PRIMARY },
+            },
+          }}
+        >
+          <TextField
+            label="Email"
+            name="email"
+            type="email"
+            placeholder="hello@email.com"
+            required
+          />
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 16 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.7, ease: EASE_PRIMARY },
+            },
+          }}
+        >
+          <TextAreaField
+            label="Message"
+            name="message"
+            placeholder="Tell us about your event."
+          />
+        </motion.div>
+      </div>
 
       <motion.div
         variants={{
-          hidden: { opacity: 0, scale: 0.95 },
+          hidden: { opacity: 0, y: 12 },
           visible: {
             opacity: 1,
-            scale: 1,
-            transition: { duration: 0.6, ease: EASE_OVERSHOOT },
+            y: 0,
+            transition: { duration: 0.6, ease: EASE_PRIMARY },
           },
         }}
-        style={{ marginTop: 4 }}
       >
         <button
           type="submit"
@@ -332,16 +321,14 @@ function ContactFormBody({
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: submitted ? "#0f3942" : TEAL,
+            backgroundColor: submitted ? TEAL_DARK : TEAL,
             color: "#fff",
-            padding: "10px 22px",
-            fontSize: 13,
-            lineHeight: "18px",
+            padding: "8px 16px",
+            fontSize: 12,
+            lineHeight: "16px",
             fontWeight: 400,
             border: "none",
-            textDecoration: "none",
-            transition:
-              "background-color 240ms ease, transform 240ms ease",
+            transition: "background-color 240ms ease",
           }}
           onMouseEnter={(e) => {
             if (submitted) return;
@@ -360,7 +347,6 @@ function ContactFormBody({
 }
 
 export function Contact() {
-  const [type, setType] = useState<typeof PROJECT_TYPES[number]>("Wedding");
   const [submitted, setSubmitted] = useState(false);
 
   /* No real backend — simulate the success state so the section
@@ -383,7 +369,7 @@ export function Contact() {
           rather than adjacent. */}
       <div
         className="relative hidden md:block w-full"
-        style={{ height: SECTION_H_VW }}
+        style={{ minHeight: "100vh" }}
       >
         <h2 className="sr-only" aria-label="Get in Touch">
           Get in Touch
@@ -394,26 +380,23 @@ export function Contact() {
           imageAlt=""
           imageRect={{
             left: IMG_LEFT_VW,
-            top: IMG_TOP_VW,
+            top: IMG_TOP_CENTERED,
             width: IMG_W_VW,
             height: IMG_H_VW,
           }}
-          parentSize={{ width: "100vw", height: SECTION_H_VW }}
+          parentSize={{ width: "100vw", height: "100vh" }}
           imageReveal
           imageKenBurns
           imageDelay={0.15}
           inkColor={INK}
           renderText={(color) => (
             <>
-              {/* Outer wrapper centres the word on its anchor; inner
-                  motion.div handles the slide-in offset so framer's
-                  transform doesn't fight with translateX(-50%). */}
               <div
                 aria-hidden
                 className="absolute"
                 style={{
                   left: GET_IN_CX_VW,
-                  top: GET_IN_TOP_VW,
+                  top: GET_IN_TOP_CENTERED,
                   transform: "translateX(-50%)",
                 }}
               >
@@ -432,7 +415,7 @@ export function Contact() {
                 className="absolute"
                 style={{
                   left: TOUCH_CX_VW,
-                  top: TOUCH_TOP_VW,
+                  top: TOUCH_TOP_CENTERED,
                   transform: "translateX(-50%)",
                 }}
               >
@@ -450,28 +433,20 @@ export function Contact() {
           )}
         />
 
-        {/* Form — absolutely positioned on the right canvas of the
-            same dual-clip stage. Top edge aligns with the image's
-            top breathing room; right edge mirrors the image's
-            left gutter. The form's stagger delay (0.6 s) lands
-            after the wordmarks have slid in, so the eye reads
-            left-to-right in sync with the entrance. */}
+        {/* Form — absolutely positioned in the right canvas of
+            the dual-clip stage. Vertically centred via top:50% +
+            translateY(-50%) so it tracks any viewport height. */}
         <div
           className="absolute"
           style={{
-            top: FORM_TOP_VW,
-            right: FORM_RIGHT_VW,
+            top: "50%",
+            transform: "translateY(-50%)",
+            left: `${FORM_LEFT_PCT}%`,
             width: FORM_WIDTH_VW,
             zIndex: 5,
           }}
         >
-          <ContactFormBody
-            type={type}
-            setType={setType}
-            submitted={submitted}
-            onSubmit={onSubmit}
-            compact
-          />
+          <ContactFormBody submitted={submitted} onSubmit={onSubmit} />
         </div>
       </div>
 
@@ -537,12 +512,7 @@ export function Contact() {
         {/* Mobile form sits below the wordmark stack with its own
             container max-width so it stays comfortable to fill. */}
         <div className="mt-12 w-full max-w-[420px]">
-          <ContactFormBody
-            type={type}
-            setType={setType}
-            submitted={submitted}
-            onSubmit={onSubmit}
-          />
+          <ContactFormBody submitted={submitted} onSubmit={onSubmit} />
         </div>
       </div>
     </section>
