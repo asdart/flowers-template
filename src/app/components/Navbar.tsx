@@ -2,7 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import svgPaths from "../../imports/svg-55lg8z247s";
 
-export type TemplateId = "wilde" | "orla" | "verdant" | "minimal" | "poison";
+export type TemplateId =
+  | "wilde"
+  | "orla"
+  | "verdant"
+  | "minimal"
+  | "poison"
+  | "exploration";
 
 const dropdownLinks = [
   { label: "Gallery", href: "#gallery", description: "Selected blooms" },
@@ -25,6 +31,7 @@ const templateOptions: { id: TemplateId; label: string; description: string }[] 
   { id: "verdant", label: "Verdant", description: "Bold forest · Fraunces typography" },
   { id: "minimal", label: "La Nube", description: "Warm minimal · floating pill nav" },
   { id: "poison", label: "Poison Bloom", description: "Editorial cream · Fraunces Thin wordmarks" },
+  { id: "exploration", label: "Exploration", description: "Mask distortion · interactive WebGL" },
 ];
 
 type NavbarProps = {
@@ -243,6 +250,46 @@ const themes: Record<TemplateId, Theme> = {
     pillLinkPadding: "px-0 py-0",
     navTopPx: 0,
   },
+  exploration: {
+    text: "text-white",
+    brand: {
+      fontClass: "font-sans font-bold",
+      sizeClass: "text-[13px]",
+      trackingClass: "tracking-[0.06em]",
+      caseClass: "uppercase",
+      label: "Artifacts.Deeo",
+    },
+    pill:
+      "rounded-full bg-white/10 text-[11px] font-medium uppercase leading-none tracking-[0.18em] text-white transition-colors hover:bg-white/20",
+    pillArrowFill: "white",
+    divider: "",
+    ctaButton:
+      "rounded-full border border-white/40 bg-transparent px-3.5 py-1.5 text-[11px] font-medium uppercase leading-none tracking-[0.18em] text-white transition-colors hover:bg-white hover:text-[#0b0a14]",
+    dropdownPanel:
+      "rounded-2xl border border-white/10 bg-[#0b0a14]/85 shadow-2xl backdrop-blur-xl",
+    dropdownLabel: "font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-white",
+    dropdownDescription:
+      "text-[11px] leading-tight text-white/55 transition-colors group-hover:text-white/80",
+    dropdownItemHover: "hover:bg-white/8",
+    dropdownActiveBg: "bg-white/12",
+    activePill:
+      "rounded-full bg-[#EEF7CC] px-1.5 py-0.5 text-[9px] font-normal not-italic uppercase tracking-widest text-[#0b0a14]",
+    mobileButton:
+      "relative z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20",
+    mobileBar: "bg-white",
+    mobileOverlay: "bg-[#0b0a14]/95 text-white backdrop-blur-xl",
+    mobileLinkBorder: "border-white/10",
+    mobileLabel: "font-sans text-3xl font-bold uppercase tracking-tight",
+    mobileSectionLabel: "text-[11px] uppercase tracking-[0.3em] text-white/40",
+    mobileInactive: "text-white/75 hover:text-white",
+    mobileActive: "text-white",
+    navLinkFontClass: "font-sans uppercase tracking-[0.18em]",
+    desktopLayout: "inline",
+    linksWrapperClass: "flex items-center gap-2",
+    pillTriggerPadding: "pl-3 pr-2.5 py-1.5",
+    pillLinkPadding: "px-3 py-1.5",
+    navTopPx: 0,
+  },
   minimal: {
     text: "text-[#3A3733]",
     brand: {
@@ -358,6 +405,8 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
       ? "#minimal-footer"
       : activeTemplate === "poison"
       ? "#poison-contact"
+      : activeTemplate === "exploration"
+      ? "#exploration-contact"
       : "#contact";
   const contactLabel =
     activeTemplate === "orla" ? "Inquire" : "Contact us";
@@ -376,7 +425,11 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
       ? "px-6 py-0 h-14"
       : activeTemplate === "verdant" || activeTemplate === "poison"
       ? "px-6 py-3"
+      : activeTemplate === "exploration"
+      ? "px-5 py-3"
       : "px-6 py-6";
+
+  const explorationBarBg = activeTemplate === "exploration" ? "#0b0a14" : undefined;
 
   return (
     <motion.nav
@@ -387,7 +440,7 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
       className={`fixed left-0 z-50 flex w-full items-center justify-between ${navPadding} ${theme.text} ${theme.desktopLayout === "float-center" ? "pointer-events-none" : ""}`}
       style={{
         top: theme.navTopPx,
-        backgroundColor: scrolled ? "#140A05" : undefined,
+        backgroundColor: scrolled ? "#140A05" : explorationBarBg,
         transition: "background-color 0.3s ease, color 0.3s ease",
         color: scrolled
           ? scrolledColor
@@ -395,6 +448,8 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
           ? "#141217"
           : activeTemplate === "verdant" || activeTemplate === "poison"
           ? "#140a05"
+          : activeTemplate === "exploration"
+          ? "#ffffff"
           : undefined,
       }}
     >

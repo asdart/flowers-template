@@ -15,6 +15,7 @@ import { OrlaTemplate } from "./templates/OrlaTemplate";
 import { VerdantTemplate } from "./templates/VerdantTemplate";
 import { MinimalTemplate } from "./templates/MinimalTemplate";
 import { PoisonTemplate } from "./templates/PoisonTemplate";
+import { ExplorationTemplate } from "./templates/ExplorationTemplate";
 
 function WildeFlowerTemplate() {
   return (
@@ -59,6 +60,8 @@ export default function App() {
         <MinimalTemplate />
       ) : template === "poison" ? (
         <PoisonTemplate />
+      ) : template === "exploration" ? (
+        <ExplorationTemplate />
       ) : (
         <OrlaTemplate />
       )}
