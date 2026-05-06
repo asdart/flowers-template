@@ -1,5 +1,13 @@
 import { useState, useEffect, useRef, useCallback, type FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import heroImg1 from "../../imports/poison-bloom-hero.png";
+import heroImg2 from "../../imports/poison-bloom-about.png";
+import heroImg3 from "../../imports/poison-bloom-contact-hero.png";
+import heroImg4 from "../../imports/Flower.jpg";
+import projectImg1 from "../../imports/poison-services-brand-1.png";
+import projectImg2 from "../../imports/poison-services-weddings-1.png";
+import projectImg3 from "../../imports/poison-services-set-1.png";
+import projectImg4 from "../../imports/poison-orchid-carousel.png";
 
 /* ─────────────────────────────────────────────────────────────
    La Nube — minimal warm-neutral floral studio.
@@ -23,35 +31,35 @@ const INTER: React.CSSProperties = {
 const SLIDES = [
   {
     title: { main: "Bloom is in ", light: "the air." },
-    bg: "radial-gradient(ellipse at 70% 30%,#d8c9b6,transparent 55%),radial-gradient(ellipse at 20% 80%,#b8b3a8,transparent 60%),radial-gradient(ellipse at 50% 50%,#efe6d8,#c9c2b3 80%)",
+    bg: "#e8ddd0",
+    img: heroImg1,
   },
   {
     title: { main: "Fragrance is in ", light: "the air." },
-    bg: "radial-gradient(ellipse at 30% 20%,#c9d4e1,transparent 55%),radial-gradient(ellipse at 80% 70%,#8ea5c2,transparent 60%),radial-gradient(ellipse at 50% 50%,#d4dde8,#3b4a64 80%)",
+    bg: "#c8d5c0",
+    img: heroImg2,
   },
   {
     title: { main: "Petal is in ", light: "the air." },
-    bg: "radial-gradient(ellipse at 60% 40%,#ede5d2,transparent 55%),radial-gradient(ellipse at 30% 70%,#c5b89a,transparent 60%),radial-gradient(ellipse at 50% 50%,#f5f0e6,#bba892 80%)",
+    bg: "#cdd6e3",
+    img: heroImg3,
   },
   {
     title: { main: "Silence is in ", light: "the air." },
-    bg: "radial-gradient(ellipse at 40% 30%,#5a5450,transparent 55%),radial-gradient(ellipse at 70% 80%,#3a3a3a,transparent 60%),radial-gradient(ellipse at 50% 50%,#4a4845,#1a1816 80%)",
+    bg: "#e8dfc8",
+    img: heroImg4,
   },
 ];
 const SLIDE_MS = 4000;
 
-const THUMB_BG = [
-  "linear-gradient(140deg,#e8dfcc,#9b958a)",
-  "linear-gradient(160deg,#c9d4e1,#3b4a64)",
-  "linear-gradient(140deg,#efeadd,#bba892)",
-  "linear-gradient(160deg,#3a3a3a,#86797f)",
-];
+const THUMB_IMGS = [heroImg1, heroImg2, heroImg3, heroImg4];
 
 /* ─── Project cards ────────────────────────────────────────────── */
 const PROJECTS = [
   {
     meta: "Arrangement 02 · Beverly Hills",
     title: "Bloom is in the air",
+    img: projectImg1,
     mediaBg: "linear-gradient(140deg,#dfcfb6 0%,#a89a82 60%,#5b5446 100%)",
     blob1: "radial-gradient(circle,#f5ecd9,rgba(245,236,217,0) 70%)",
     blob2: "radial-gradient(circle,#9c8e72,rgba(156,142,114,0) 70%)",
@@ -59,6 +67,7 @@ const PROJECTS = [
   {
     meta: "Installation 06 · Bel Air Estate",
     title: "Fragrance is in the air",
+    img: projectImg2,
     mediaBg: "linear-gradient(160deg,#9eb1c8 0%,#465877 60%,#1d2536 100%)",
     blob1: "radial-gradient(circle,#cfdcec,rgba(207,220,236,0) 70%)",
     blob2: "radial-gradient(circle,#3a4a64,rgba(58,74,100,0) 70%)",
@@ -66,31 +75,56 @@ const PROJECTS = [
   {
     meta: "Event 08 · West Hollywood",
     title: "Petal is in the air",
+    img: projectImg3,
     mediaBg: "linear-gradient(135deg,#efe6d4 0%,#c2b89e 70%)",
     blob1: "radial-gradient(circle,#fff,rgba(255,255,255,0) 70%)",
     blob2: "radial-gradient(circle,#a89880,rgba(168,152,128,0) 70%)",
   },
+  {
+    meta: "Commission 11 · Malibu",
+    title: "Silence is in the air",
+    img: projectImg4,
+    mediaBg: "linear-gradient(150deg,#e8ddd0 0%,#b8a99a 60%,#6b5c52 100%)",
+    blob1: "radial-gradient(circle,#f0e6da,rgba(240,230,218,0) 70%)",
+    blob2: "radial-gradient(circle,#8c7a6e,rgba(140,122,110,0) 70%)",
+  },
 ];
 
-/* ─── Card transform per position ────────────────────────────── */
-function cardStyle(pos: number | "hidden"): React.CSSProperties {
+/* ─── Card static (non-animated) styles per position ─────────── */
+function posToStyle(pos: number | "hidden"): React.CSSProperties {
   const base: React.CSSProperties = {
     position: "absolute",
     left: "50%",
     top: 0,
     width: "100%",
-    maxWidth: 1000,
+    maxWidth: 1200,
     borderRadius: 36,
     overflow: "hidden",
     background: SURFACE,
-    transition: `transform 700ms ${EASE}, opacity 700ms ${EASE}, filter 700ms ${EASE}`,
     willChange: "transform",
   };
-  if (pos === 0) return { ...base, zIndex: 3, transform: "translateX(-50%) translateY(0) scale(1)" };
-  if (pos === 1) return { ...base, zIndex: 2, transform: "translateX(-50%) translateY(-22px) scale(.94)", filter: "brightness(.95)" };
-  if (pos === 2) return { ...base, zIndex: 1, transform: "translateX(-50%) translateY(-44px) scale(.88)", filter: "brightness(.9)" };
-  return { ...base, zIndex: 0, opacity: 0, transform: "translateX(-50%) translateY(-60px) scale(.84)", pointerEvents: "none" };
+  if (pos === 0) return { ...base, zIndex: 3 };
+  if (pos === 1) return { ...base, zIndex: 2, filter: "brightness(0.95)" };
+  if (pos === 2) return { ...base, zIndex: 1, filter: "brightness(0.90)" };
+  return { ...base, zIndex: 0, pointerEvents: "none" };
 }
+
+/* ─── Framer Motion animate target per position ──────────────── */
+function posToAnimate(pos: number | "hidden") {
+  if (pos === 0) return { x: "-50%", y: 0, scale: 1, opacity: 1 };
+  if (pos === 1) return { x: "-50%", y: -40, scale: 0.93, opacity: 1 };
+  if (pos === 2) return { x: "-50%", y: -80, scale: 0.86, opacity: 1 };
+  return { x: "-50%", y: -110, scale: 0.80, opacity: 0 };
+}
+
+const CARD_TRANSITION = { duration: 0.65, ease: [0.4, 0, 0.2, 1] as number[] };
+const EXIT_TRANSITION  = {
+  duration: 0.80,
+  ease: [0.4, 0, 0.2, 1] as number[],
+  // Hold opacity at 1 for the first 35% of the animation, then fade out
+  opacity: { duration: 0.55, delay: 0.30, ease: [0.55, 0, 0.7, 0.4] as number[] },
+};
+const AUTOPLAY_MS = 4000;
 
 /* ═══════════════════════════════════════════════════════════════
    HERO
@@ -100,8 +134,8 @@ function MinimalHero() {
   const [displaySlide, setDisplaySlide] = useState(0);
   const [titleVisible, setTitleVisible] = useState(true);
 
-  const [bgA, setBgA] = useState({ bg: SLIDES[0].bg, opacity: 1 });
-  const [bgB, setBgB] = useState({ bg: SLIDES[0].bg, opacity: 0 });
+  const [bgA, setBgA] = useState({ bg: SLIDES[0].bg, img: SLIDES[0].img, opacity: 1 });
+  const [bgB, setBgB] = useState({ bg: SLIDES[0].bg, img: SLIDES[0].img, opacity: 0 });
   const activeBgRef = useRef<"a" | "b">("a");
 
   const currentRef = useRef(0);
@@ -111,10 +145,6 @@ function MinimalHero() {
   const thumbRingRefs = useRef<(SVGRectElement | null)[]>([null, null, null, null]);
 
   const heroRef = useRef<HTMLElement>(null);
-  const nube1Ref = useRef<HTMLDivElement>(null);
-  const nube2Ref = useRef<HTMLDivElement>(null);
-  const nube3Ref = useRef<HTMLDivElement>(null);
-
   const animateRing = useCallback((idx: number) => {
     cancelAnimationFrame(ringRafRef.current);
     thumbRingRefs.current.forEach(r => r?.setAttribute("stroke-dashoffset", "1"));
@@ -136,10 +166,10 @@ function MinimalHero() {
     const incoming = activeBgRef.current === "a" ? "b" : "a";
     activeBgRef.current = incoming;
     if (incoming === "b") {
-      setBgB({ bg: SLIDES[idx].bg, opacity: 1 });
+      setBgB({ bg: SLIDES[idx].bg, img: SLIDES[idx].img, opacity: 1 });
       setBgA(p => ({ ...p, opacity: 0 }));
     } else {
-      setBgA({ bg: SLIDES[idx].bg, opacity: 1 });
+      setBgA({ bg: SLIDES[idx].bg, img: SLIDES[idx].img, opacity: 1 });
       setBgB(p => ({ ...p, opacity: 0 }));
     }
 
@@ -169,23 +199,6 @@ function MinimalHero() {
     };
   }, [animateRing, startTimer]);
 
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-    const onMove = (e: MouseEvent) => {
-      const r = el.getBoundingClientRect();
-      const dx = (e.clientX - r.width / 2) / r.width;
-      const dy = (e.clientY - r.height / 2) / r.height;
-      ([nube1Ref, nube2Ref, nube3Ref] as React.RefObject<HTMLDivElement>[]).forEach((ref, i) => {
-        if (ref.current) {
-          const k = (i + 1) * 8;
-          ref.current.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
-        }
-      });
-    };
-    el.addEventListener("mousemove", onMove);
-    return () => el.removeEventListener("mousemove", onMove);
-  }, []);
 
   return (
     <section
@@ -209,8 +222,7 @@ function MinimalHero() {
           inset: 24,
           borderRadius: 40,
           overflow: "hidden",
-          background:
-            "radial-gradient(ellipse at 70% 30%,#d8c9b6 0%,transparent 55%),radial-gradient(ellipse at 20% 80%,#b8b3a8 0%,transparent 60%),radial-gradient(ellipse at 50% 50%,#efe6d8 0%,#c9c2b3 80%)",
+          background: "#e8ddd0",
         }}
       >
         {/* Crossfade layer A */}
@@ -224,7 +236,13 @@ function MinimalHero() {
             transition: "opacity 1100ms cubic-bezier(0.4,0,0.2,1)",
             pointerEvents: "none",
           }}
-        />
+        >
+          <img
+            src={bgA.img}
+            alt=""
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
         {/* Crossfade layer B */}
         <div
           style={{
@@ -236,7 +254,13 @@ function MinimalHero() {
             transition: "opacity 1100ms cubic-bezier(0.4,0,0.2,1)",
             pointerEvents: "none",
           }}
-        />
+        >
+          <img
+            src={bgB.img}
+            alt=""
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
 
         {/* Film grain overlay */}
         <div
@@ -290,57 +314,6 @@ function MinimalHero() {
         Floral Studio
       </div>
 
-      {/* Nube (cloud) silhouettes */}
-      {(
-        [
-          {
-            ref: nube1Ref,
-            style: {
-              width: "46vmin",
-              height: "42vmin",
-              left: "6%",
-              bottom: "10%",
-              borderRadius: "55% 45% 60% 40% / 55% 60% 40% 45%",
-            },
-          },
-          {
-            ref: nube2Ref,
-            style: {
-              width: "30vmin",
-              height: "24vmin",
-              right: "10%",
-              top: "14%",
-              borderRadius: "60% 40% 55% 45% / 50% 60% 40% 50%",
-            },
-          },
-          {
-            ref: nube3Ref,
-            style: {
-              width: "18vmin",
-              height: "14vmin",
-              left: "42%",
-              top: "18%",
-              borderRadius: "50% 50% 60% 40% / 50% 50% 50% 50%",
-              opacity: 0.7,
-            },
-          },
-        ] as { ref: React.RefObject<HTMLDivElement>; style: React.CSSProperties }[]
-      ).map(({ ref, style }, i) => (
-        <div
-          key={i}
-          ref={ref}
-          style={{
-            position: "absolute",
-            zIndex: 1,
-            background:
-              "radial-gradient(circle at 35% 30%,rgba(255,255,255,.92),rgba(255,255,255,.5) 55%,rgba(255,255,255,.05) 85%)",
-            filter: "blur(0.4px)",
-            boxShadow: "0 40px 120px rgba(58,55,51,.06)",
-            transition: "transform 80ms linear",
-            ...style,
-          }}
-        />
-      ))}
 
       {/* Hero inner content */}
       <div
@@ -458,7 +431,7 @@ function MinimalHero() {
         }}
         className="!bottom-6 sm:!bottom-12"
       >
-        {THUMB_BG.map((bg, i) => (
+        {THUMB_IMGS.map((img, i) => (
           <button
             key={i}
             role="tab"
@@ -472,10 +445,9 @@ function MinimalHero() {
               width: 64,
               height: 64,
               borderRadius: 16,
-              overflow: "visible",
+              overflow: "hidden",
               cursor: "pointer",
               position: "relative",
-              background: bg,
               border: "none",
               padding: 0,
               flexShrink: 0,
@@ -486,6 +458,7 @@ function MinimalHero() {
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.transform = "translateY(-2px)")}
             onMouseLeave={e => ((e.currentTarget as HTMLElement).style.transform = "translateY(0)")}
           >
+            <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             <svg
               viewBox="0 0 64 64"
               aria-hidden
@@ -604,11 +577,38 @@ function MinimalAbout() {
    ═══════════════════════════════════════════════════════════════ */
 function MinimalProjects() {
   const [stackIdx, setStackIdx] = useState(0);
+  const [exitingCardIdx, setExitingCardIdx] = useState<number | null>(null);
+  const [enteringCardIdx, setEnteringCardIdx] = useState<number | null>(null);
+  // Incrementing a card's version forces a key change → remount → fresh `initial` state
+  const [cardVersions, setCardVersions] = useState(() => PROJECTS.map(() => 0));
 
   function getPos(i: number): number | "hidden" {
     const rel = (i - stackIdx + PROJECTS.length) % PROJECTS.length;
     return rel <= 2 ? rel : "hidden";
   }
+
+  function advance(nextIdx: number, dir: "next" | "prev" = "next") {
+    if (exitingCardIdx !== null || enteringCardIdx !== null) return;
+    if (dir === "next") {
+      setExitingCardIdx(stackIdx);
+      setStackIdx(nextIdx);
+    } else {
+      // Bump version so the entering card remounts with a fresh initial state
+      setCardVersions(v => { const n = [...v]; n[nextIdx]++; return n; });
+      setEnteringCardIdx(nextIdx);
+      setStackIdx(nextIdx);
+    }
+  }
+
+  // Autoplay: auto-advance to the next card every AUTOPLAY_MS.
+  // Resets on every stackIdx change (manual or automatic).
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setExitingCardIdx(stackIdx);
+      setStackIdx((stackIdx + 1) % PROJECTS.length);
+    }, AUTOPLAY_MS);
+    return () => clearTimeout(t);
+  }, [stackIdx]);
 
   return (
     <section
@@ -625,11 +625,12 @@ function MinimalProjects() {
       <div
         style={{
           maxWidth: 1100,
-          margin: "0 auto 64px",
+          margin: "0 auto 80px",
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "space-between",
           gap: 48,
+          height: "fit-content",
         }}
         className="flex-col md:flex-row items-start md:items-end gap-6 md:gap-12"
       >
@@ -693,21 +694,41 @@ function MinimalProjects() {
       {/* Stacked cards */}
       <div
         style={{ position: "relative", maxWidth: 1100, margin: "0 auto" }}
-        className="min-h-[420px] md:h-[560px]"
+        className="min-h-[480px] md:h-[620px]"
       >
         {PROJECTS.map((proj, i) => {
           const pos = getPos(i);
+          const isExiting  = exitingCardIdx === i;
+          const isEntering = enteringCardIdx === i;
           return (
-            <article
-              key={i}
-              style={cardStyle(pos)}
+            <motion.article
+              key={`${i}-${cardVersions[i]}`}
+              style={
+                isExiting
+                  ? { ...posToStyle("hidden"), zIndex: 3 }
+                  : isEntering
+                  ? { ...posToStyle(pos), zIndex: 3 }
+                  : posToStyle(pos)
+              }
+              // Entering card gets an explicit initial so it starts scaled-up + invisible
+              initial={isEntering ? { x: "-50%", y: 0, scale: 1.08, opacity: 0 } : false}
+              animate={
+                isExiting
+                  ? { x: "-50%", y: 60, scale: 1.08, opacity: 0 }
+                  : posToAnimate(pos)
+              }
+              transition={isExiting ? EXIT_TRANSITION : CARD_TRANSITION}
+              onAnimationComplete={() => {
+                if (isExiting)  setExitingCardIdx(null);
+                if (isEntering) setEnteringCardIdx(null);
+              }}
               onClick={e => {
-                if (pos === 0) return;
+                if (pos === 0 || exitingCardIdx !== null || enteringCardIdx !== null) return;
                 if ((e.target as HTMLElement).closest("a")) return;
-                setStackIdx(i);
+                advance(i, "next");
               }}
             >
-              {/* Card image area with blobs */}
+              {/* Card image area */}
               <div
                 style={{
                   position: "relative",
@@ -717,30 +738,25 @@ function MinimalProjects() {
                   background: proj.mediaBg,
                 }}
               >
-                <div
+                <img
+                  src={proj.img}
+                  alt={proj.title}
                   style={{
                     position: "absolute",
-                    width: "50%",
-                    height: "60%",
-                    left: "20%",
-                    top: "15%",
-                    borderRadius: 9999,
-                    filter: "blur(40px)",
-                    opacity: 0.85,
-                    background: proj.blob1,
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "center",
                   }}
                 />
+                {/* Gradient overlay for text legibility */}
                 <div
                   style={{
                     position: "absolute",
-                    width: "30%",
-                    height: "35%",
-                    right: "8%",
-                    bottom: "12%",
-                    borderRadius: 9999,
-                    filter: "blur(40px)",
-                    opacity: 0.85,
-                    background: proj.blob2,
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.18) 45%, rgba(0,0,0,0) 100%)",
                   }}
                 />
               </div>
@@ -805,7 +821,7 @@ function MinimalProjects() {
                   Learn more
                 </a>
               </div>
-            </article>
+            </motion.article>
           );
         })}
       </div>
@@ -823,7 +839,7 @@ function MinimalProjects() {
         {/* Prev */}
         <button
           aria-label="Previous project"
-          onClick={() => setStackIdx(i => (i - 1 + PROJECTS.length) % PROJECTS.length)}
+          onClick={() => advance((stackIdx - 1 + PROJECTS.length) % PROJECTS.length, "prev")}
           style={{
             width: 44,
             height: 44,
@@ -847,37 +863,56 @@ function MinimalProjects() {
           </svg>
         </button>
 
-        {/* Pager dots */}
+        {/* Pager dots / progress */}
         <div
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 8,
-            padding: "12px 16px",
+            gap: 10,
+            height: 44,
+            padding: "0 18px",
             borderRadius: 999,
             background: SURFACE,
             backdropFilter: "blur(20px) saturate(1.1)",
             WebkitBackdropFilter: "blur(20px) saturate(1.1)",
           }}
         >
-          {PROJECTS.map((_, i) => (
-            <span
-              key={i}
-              style={{
-                height: 5,
-                borderRadius: 9999,
-                background: stackIdx === i ? TEXT_PRIMARY : TEXT_MUTED,
-                width: stackIdx === i ? 22 : 6,
-                transition: `all 360ms ${EASE}`,
-              }}
-            />
-          ))}
+          {PROJECTS.map((_, i) => {
+            const isActive = stackIdx === i;
+            return (
+              <div
+                key={i}
+                style={{
+                  height: 6,
+                  borderRadius: 9999,
+                  background: TEXT_MUTED,
+                  width: isActive ? 56 : 6,
+                  overflow: "hidden",
+                  transition: `width 360ms ${EASE}`,
+                }}
+              >
+                {isActive && (
+                  <motion.div
+                    key={`fill-${stackIdx}`}
+                    initial={{ width: "0%" }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: AUTOPLAY_MS / 1000, ease: "linear" }}
+                    style={{
+                      height: "100%",
+                      background: TEXT_PRIMARY,
+                      borderRadius: 9999,
+                    }}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Next */}
         <button
           aria-label="Next project"
-          onClick={() => setStackIdx(i => (i + 1) % PROJECTS.length)}
+          onClick={() => advance((stackIdx + 1) % PROJECTS.length, "next")}
           style={{
             width: 44,
             height: 44,
