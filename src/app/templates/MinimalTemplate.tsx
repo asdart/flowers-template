@@ -442,17 +442,15 @@ function MinimalHero() {
               goTo(i);
             }}
             style={{
-              width: 64,
+              width: 96,
               height: 64,
-              borderRadius: 16,
+              borderRadius: 14,
               overflow: "hidden",
               cursor: "pointer",
               position: "relative",
               border: "none",
               padding: 0,
               flexShrink: 0,
-              outline: current === i ? "1.5px solid rgba(255,255,255,.15)" : "none",
-              outlineOffset: 2,
               transition: `transform 240ms ${EASE}`,
             }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.transform = "translateY(-2px)")}
@@ -460,7 +458,7 @@ function MinimalHero() {
           >
             <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             <svg
-              viewBox="0 0 64 64"
+              viewBox="0 0 96 64"
               aria-hidden
               style={{
                 position: "absolute",
@@ -477,9 +475,10 @@ function MinimalHero() {
                 }}
                 x="1.5"
                 y="1.5"
-                width="61"
+                width="93"
                 height="61"
-                rx="12.5"
+                rx="11"
+                ry="11"
                 fill="none"
                 stroke="rgba(255,255,255,0.92)"
                 strokeWidth="2.5"

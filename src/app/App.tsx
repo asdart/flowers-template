@@ -16,6 +16,7 @@ import { VerdantTemplate } from "./templates/VerdantTemplate";
 import { MinimalTemplate } from "./templates/MinimalTemplate";
 import { PoisonTemplate } from "./templates/PoisonTemplate";
 import { ExplorationTemplate } from "./templates/ExplorationTemplate";
+import { AcreageTemplate } from "./templates/AcreageTemplate";
 
 function WildeFlowerTemplate() {
   return (
@@ -37,10 +38,24 @@ function WildeFlowerTemplate() {
   );
 }
 
+const templateIds: TemplateId[] = [
+  "wilde",
+  "orla",
+  "verdant",
+  "minimal",
+  "poison",
+  "exploration",
+  "acreage",
+];
+
 export default function App() {
-  const [template, setTemplate] = useState<TemplateId>(
-    () => (localStorage.getItem("activeTemplate") as TemplateId | null) ?? "wilde"
-  );
+  const [template, setTemplate] = useState<TemplateId>(() => {
+    const stored = localStorage.getItem("activeTemplate");
+    if (stored && templateIds.includes(stored as TemplateId)) {
+      return stored as TemplateId;
+    }
+    return "wilde";
+  });
 
   const handleTemplateChange = (id: TemplateId) => {
     localStorage.setItem("activeTemplate", id);
@@ -62,6 +77,8 @@ export default function App() {
         <PoisonTemplate />
       ) : template === "exploration" ? (
         <ExplorationTemplate />
+      ) : template === "acreage" ? (
+        <AcreageTemplate />
       ) : (
         <OrlaTemplate />
       )}
