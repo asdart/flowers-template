@@ -114,7 +114,6 @@ export default function ProcessSection() {
                 </p>
               </motion.div>
             ))}
-            <div className="border-t border-white/10" />
           </div>
         </motion.div>
       </div>
