@@ -386,6 +386,8 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
   const [templatesOpen, setTemplatesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  /** Acreage-only: floating pill overlaps a white section (#feedback / #contact). */
+  const [acreageNavOnLightSurface, setAcreageNavOnLightSurface] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   /** Separate refs — multiple wrappers mount while hidden (e.g. Minimal keeps inline nav in DOM); one shared ref would overwrite `.current` and break outside-click detection on the visible pill. */
   const templatesFloatCenterRef = useRef<HTMLDivElement | null>(null);
@@ -451,6 +453,53 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /** When Acreage’s fixed pill sits over Feedback or Contact (white backgrounds), invert link + glyph colors. */
+  useEffect(() => {
+    if (activeTemplate !== "acreage") {
+      setAcreageNavOnLightSurface(false);
+      return;
+    }
+    const SURFACE_SELECTOR = '[data-acreage-nav-surface="light"]';
+
+    function measureNavSurfaceDepth() {
+      const pill = templatesFloatPillRef.current;
+      if (!pill) {
+        setAcreageNavOnLightSurface(false);
+        return;
+      }
+      const pillRect = pill.getBoundingClientRect();
+      const cx = pillRect.left + pillRect.width / 2;
+      const cy = pillRect.top + pillRect.height / 2;
+
+      let hitLight = false;
+      for (const el of document.querySelectorAll(SURFACE_SELECTOR)) {
+        const r = el.getBoundingClientRect();
+        if (cx >= r.left && cx <= r.right && cy >= r.top && cy <= r.bottom) {
+          hitLight = true;
+          break;
+        }
+      }
+      setAcreageNavOnLightSurface(hitLight);
+    }
+
+    measureNavSurfaceDepth();
+    window.addEventListener("scroll", measureNavSurfaceDepth, { passive: true });
+    window.addEventListener("resize", measureNavSurfaceDepth);
+
+    /** Layout shifts (accordion, carousel, fonts) after first paint — keep in sync without polling. */
+    const ro =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(measureNavSurfaceDepth)
+        : null;
+    ro?.observe(document.documentElement);
+
+    return () => {
+      window.removeEventListener("scroll", measureNavSurfaceDepth);
+      window.removeEventListener("resize", measureNavSurfaceDepth);
+      ro?.disconnect();
+    };
+  }, [activeTemplate]);
+
   const activeTemplateLabel =
     templateOptions.find((t) => t.id === activeTemplate)?.label ?? "Templates";
 
@@ -464,7 +513,25 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
 
   const scrolledColor = "#F2EFEA";
   const overrideColor = scrolled ? scrolledColor : undefined;
-  const arrowFill = scrolled ? scrolledColor : theme.pillArrowFill;
+  const acreageFloatOnLight = activeTemplate === "acreage" && acreageNavOnLightSurface;
+  const acreageMutedFill = "#262626";
+  /** Float-pill link row (Impact…Templates) swaps from white→ink when the pill sits over white bands. */
+  const acreagePillInk =
+    acreageFloatOnLight &&
+    `rounded-full text-sm font-normal leading-none text-neutral-800/90 transition-colors hover:text-neutral-950`;
+  const acreagePillInkWrapper = acreagePillInk || theme.pill;
+  const acreageLogoLinkInk = acreageFloatOnLight
+    ? "flex h-full items-center justify-center px-5 text-neutral-900 transition-opacity hover:opacity-75"
+    : "flex h-full items-center justify-center px-5 text-white transition-opacity hover:opacity-80";
+  const acreageTemplatesOpenHighlight =
+    templatesOpen &&
+    (acreageFloatOnLight ? "bg-black/[0.08]" : theme.pillTriggerOpenBg ?? "");
+
+  const arrowFill = acreageFloatOnLight
+    ? acreageMutedFill
+    : scrolled
+      ? scrolledColor
+      : theme.pillArrowFill;
 
   const isLightTemplate = activeTemplate === "orla" || activeTemplate === "verdant";
   const contactHref =
@@ -491,6 +558,9 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
       : isLightTemplate
       ? "text-[rgba(20,10,5,0.6)]"
       : "text-white/40";
+
+  const acreageMobileBarFill =
+    activeTemplate === "acreage" && acreageNavOnLightSurface ? "#171717" : overrideColor;
 
   // Padding around the nav itself.
   const navPadding =
@@ -659,20 +729,22 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
         <div className="pointer-events-none absolute inset-x-0 top-1/2 hidden -translate-y-1/2 md:flex md:items-center md:justify-center">
           <div
             ref={templatesFloatPillRef}
-            className="liquid-glass liquid-glass--nav liquid-glass--dropdown-host pointer-events-auto relative z-[55] flex items-center rounded-full p-1"
+            className={`liquid-glass liquid-glass--nav liquid-glass--dropdown-host pointer-events-auto relative z-[55] flex items-center rounded-full p-1 transition-[background-color,box-shadow] duration-300 ${
+              acreageFloatOnLight ? "liquid-glass--acreage-on-light" : ""
+            }`}
             style={{ height: 56 }}
           >
             <a
               href="#stats"
               onClick={() => setTemplatesOpen(false)}
-              className={`${theme.pill} ${theme.navLinkFontClass} px-5 h-full inline-flex items-center`}
+              className={`${acreagePillInkWrapper} ${theme.navLinkFontClass} px-5 h-full inline-flex items-center`}
             >
               Impact
             </a>
             <a
               href="#services"
               onClick={() => setTemplatesOpen(false)}
-              className={`${theme.pill} ${theme.navLinkFontClass} px-5 h-full inline-flex items-center`}
+              className={`${acreagePillInkWrapper} ${theme.navLinkFontClass} px-5 h-full inline-flex items-center`}
             >
               Services
             </a>
@@ -685,7 +757,7 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
                 setTemplatesOpen(false);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="flex h-full items-center justify-center px-5 text-white transition-opacity hover:opacity-80"
+              className={acreageLogoLinkInk}
               aria-label="Scroll to top"
             >
               <img
@@ -693,7 +765,7 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
                 alt=""
                 width={26}
                 height={26}
-                className="block h-[26px] w-[26px]"
+                className={`block h-[26px] w-[26px] ${acreageFloatOnLight ? "invert" : ""}`}
                 aria-hidden
               />
             </a>
@@ -701,14 +773,14 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
             <a
               href="#feedback"
               onClick={() => setTemplatesOpen(false)}
-              className={`${theme.pill} ${theme.navLinkFontClass} px-5 h-full inline-flex items-center`}
+              className={`${acreagePillInkWrapper} ${theme.navLinkFontClass} px-5 h-full inline-flex items-center`}
             >
               Feedback
             </a>
             <a
               href="#contact"
               onClick={() => setTemplatesOpen(false)}
-              className={`${theme.pill} ${theme.navLinkFontClass} px-5 h-full inline-flex items-center`}
+              className={`${acreagePillInkWrapper} ${theme.navLinkFontClass} px-5 h-full inline-flex items-center`}
             >
               Contact Us
             </a>
@@ -721,8 +793,8 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
                   setTemplatesOpen((v) => !v);
                   setOpen(false);
                 }}
-                className={`${theme.pill} ${theme.navLinkFontClass} flex h-full items-center gap-1.5 rounded-full px-5 transition-colors ${
-                  templatesOpen && theme.pillTriggerOpenBg ? theme.pillTriggerOpenBg : ""
+                className={`${acreagePillInkWrapper} ${theme.navLinkFontClass} flex h-full items-center gap-1.5 rounded-full px-5 transition-colors ${
+                  acreageTemplatesOpenHighlight || ""
                 }`}
               >
                 <span>Templates</span>
@@ -956,20 +1028,24 @@ export function Navbar({ activeTemplate, onTemplateChange }: NavbarProps) {
         aria-label={mobileOpen ? "Close menu" : "Open menu"}
         aria-expanded={mobileOpen}
         onClick={() => setMobileOpen((v) => !v)}
-        className={`md:hidden pointer-events-auto ${theme.mobileButton}`}
+        className={`md:hidden pointer-events-auto ${theme.mobileButton}${
+          activeTemplate === "acreage" && acreageNavOnLightSurface
+            ? " !border-black/25 !bg-black/[0.06] text-neutral-900"
+            : ""
+        }`}
       >
         <span className="sr-only">Toggle menu</span>
         <span className="relative block h-3 w-5">
           <motion.span
             animate={mobileOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            style={{ backgroundColor: overrideColor }}
+            style={{ backgroundColor: acreageMobileBarFill }}
             className={`absolute left-0 top-0 block h-[1.5px] w-5 origin-center ${theme.mobileBar}`}
           />
           <motion.span
             animate={mobileOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            style={{ backgroundColor: overrideColor }}
+            style={{ backgroundColor: acreageMobileBarFill }}
             className={`absolute bottom-0 left-0 block h-[1.5px] w-5 origin-center ${theme.mobileBar}`}
           />
         </span>

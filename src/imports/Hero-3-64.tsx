@@ -29,7 +29,7 @@ function Frame3() {
 function Container2() {
   return (
     <div className="content-stretch flex flex-col items-center leading-[32px] relative shrink-0 text-[24px] tracking-[-1px] w-full whitespace-nowrap" data-name="Container">
-      <p className="font-['Zodiak_Variable:Light_Italic',sans-serif] font-light italic relative shrink-0 text-white">Bespoke floral</p>
+      <p className="font-['DM_Sans',sans-serif] font-light italic relative shrink-0 text-white">Bespoke floral</p>
       <p className="font-['Instrument_Sans:Regular',sans-serif] font-normal relative shrink-0 text-[#efdbbb]" style={{ fontVariationSettings: "'wdth' 100" }}>{` designed to stand out.`}</p>
     </div>
   );

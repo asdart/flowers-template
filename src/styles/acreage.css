@@ -65,6 +65,15 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
+/* Acreage float-pill sits over hero video (dark); on white bands it needs a tint
+   shift so rims + blur read against #fff instead of disappearing. */
+.liquid-glass.liquid-glass--nav.liquid-glass--acreage-on-light {
+  background: rgba(0, 0, 0, 0.06);
+  box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
 /* Templates / popover panels — extra frost so the menu reads over busy heroes */
 .liquid-glass.liquid-glass--nav.liquid-glass--popover {
   backdrop-filter: blur(28px) saturate(1.18);

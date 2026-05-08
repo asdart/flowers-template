@@ -15,7 +15,7 @@ import heroVideo from "../../../../../project/public/Mystical Meadow Door.mp4";
    ═══════════════════════════════════════════════════════════════ */
 export default function HeroSection() {
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden flex flex-col">
+    <div className="relative min-h-svh bg-black text-white overflow-hidden flex flex-col">
       <video
         autoPlay
         loop
@@ -27,7 +27,7 @@ export default function HeroSection() {
         <source src={heroVideo} type="video/mp4" />
       </video>
 
-      <main className="relative z-10 mx-auto flex w-full flex-1 flex-col justify-end gap-8 bg-gradient-to-b from-transparent to-black px-6 pb-8 pt-24 md:px-12 lg:px-[120px]">
+      <main className="relative z-10 mx-auto flex w-full flex-1 flex-col justify-end gap-8 bg-gradient-to-b from-transparent to-black px-6 pb-10 pt-24 md:px-8 md:pb-8 lg:px-[120px]">
         <div className="flex w-full flex-col items-start justify-between gap-6 border-b border-white/[0.08] pb-10 lg:flex-row lg:gap-12">
           {/* Left column — title + subtitle */}
           <div className="flex w-full flex-1 flex-col items-start gap-8 pr-4 lg:pr-8">
@@ -41,7 +41,7 @@ export default function HeroSection() {
                   transition: { staggerChildren: 0.025, delayChildren: 0 },
                 },
               }}
-              className="flex w-full flex-col gap-2 text-[clamp(2rem,5vw,72px)] font-medium leading-[1.1] tracking-[-0.8px] text-white"
+              className="flex w-full flex-col gap-2 text-[clamp(2.25rem,7vw,72px)] font-medium leading-[1.1] tracking-[-0.8px] text-white"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               <p className="m-0 max-w-[920px] w-full">

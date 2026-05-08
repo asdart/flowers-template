@@ -72,7 +72,7 @@ export default function Footer() {
       <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none" />
 
       {/* Content */}
-      <div className="relative z-10 w-full mx-auto px-6 md:px-12 lg:px-[120px] pt-32 md:pt-64 pb-10 flex flex-col items-center">
+      <div className="relative z-10 w-full mx-auto px-6 md:px-12 lg:px-8 pt-20 md:pt-64 pb-10 flex flex-col items-center">
         <motion.footer
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -117,13 +117,13 @@ export default function Footer() {
               <span className="text-[10px] uppercase tracking-widest opacity-50">
                 Join the Journey:
               </span>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
                 {SOCIALS.map(({ Icon, href, label }) => (
                   <a
                     key={label}
                     href={href}
                     aria-label={label}
-                    className="opacity-70 hover:opacity-100 transition-colors hover:text-white"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full opacity-70 transition-colors hover:bg-white/10 hover:opacity-100 hover:text-white"
                   >
                     <Icon size={16} />
                   </a>

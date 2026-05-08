@@ -63,7 +63,8 @@ export default function NextSection() {
   return (
     <section
       id="feedback"
-      className="w-full bg-white text-black py-8 md:py-24 px-6 md:px-12 lg:px-[120px] flex flex-col justify-center overflow-hidden"
+      data-acreage-nav-surface="light"
+      className="w-full bg-white text-black py-16 md:py-24 px-6 md:px-12 lg:px-[120px] flex flex-col justify-center overflow-hidden"
     >
       <motion.div
         initial="hidden"
@@ -114,7 +115,7 @@ export default function NextSection() {
               }}
               className="w-full"
             >
-              <p className="text-2xl md:text-4xl lg:text-[44px] font-light leading-snug md:leading-tight text-right tracking-tight">
+              <p className="text-2xl md:text-4xl lg:text-[44px] font-light leading-snug md:leading-tight text-left md:text-right tracking-tight">
                 <Typewriter text={FEEDBACKS[currentIndex].quote} delay={0.2} speed={0.015} />
               </p>
             </motion.div>

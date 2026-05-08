@@ -41,16 +41,22 @@ function AnimatedCounter({
   );
 }
 
+const DM_SANS_STYLE = { fontFamily: "'DM Sans', sans-serif" } as const;
 const SERIF_STYLE = { fontFamily: "'Instrument Serif', serif" } as const;
+const STAT_COUNTER_STYLE = {
+  fontFamily: "'DM Sans', sans-serif",
+  fontWeight: 200,
+  letterSpacing: "-0.8px",
+} as const;
 
 export default function StatsSection() {
   return (
     <section
       id="stats"
-      className="bg-black text-white py-8 md:py-24 px-6 md:px-12 lg:px-[120px] w-full border-t border-white/10 overflow-hidden"
+      className="bg-black text-white py-16 md:py-24 px-6 md:px-8 lg:px-[120px] w-full border-t border-white/10 overflow-hidden"
     >
       <div className="w-full max-w-[1440px] mx-auto">
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-[160px] items-stretch">
+        <div className="flex flex-col lg:flex-row gap-16 items-stretch">
           {/* Left column — title, subtitle, stats grid */}
           <motion.div
             initial="hidden"
@@ -63,9 +69,11 @@ export default function StatsSection() {
             className="flex-1 flex flex-col justify-start"
           >
             <h2 className="text-[clamp(1.5rem,4vw,3.5rem)] font-medium tracking-tight mb-6 leading-[1.1] w-[590px] max-w-full">
-              <Typewriter text="Powering Harvests" delay={0} speed={0.015} />
-              <br />
-              <Typewriter text="that " delay={0.25} speed={0.015} />
+              <span className="not-italic" style={DM_SANS_STYLE}>
+                <Typewriter text="Powering Harvests" delay={0} speed={0.015} />
+                <br />
+                <Typewriter text="that " delay={0.25} speed={0.015} />
+              </span>
               <span className="italic font-normal" style={SERIF_STYLE}>
                 <Typewriter text="Maximize Your Yield" delay={0.35} speed={0.015} />
               </span>
@@ -96,7 +104,7 @@ export default function StatsSection() {
                 }}
                 className="flex flex-col"
               >
-                <div className="text-4xl md:text-5xl lg:text-[56px] tracking-tight mb-3" style={SERIF_STYLE}>
+                <div className="text-4xl md:text-5xl lg:text-[56px] mb-3" style={STAT_COUNTER_STYLE}>
                   <AnimatedCounter value={500} suffix="K+" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">
@@ -112,7 +120,7 @@ export default function StatsSection() {
                 }}
                 className="flex flex-col"
               >
-                <div className="text-4xl md:text-5xl lg:text-[56px] tracking-tight mb-3" style={SERIF_STYLE}>
+                <div className="text-4xl md:text-5xl lg:text-[56px] mb-3" style={STAT_COUNTER_STYLE}>
                   <AnimatedCounter value={99.8} decimals={1} suffix="%" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">
@@ -128,7 +136,7 @@ export default function StatsSection() {
                 }}
                 className="flex flex-col"
               >
-                <div className="text-4xl md:text-5xl lg:text-[56px] tracking-tight mb-3" style={SERIF_STYLE}>
+                <div className="text-4xl md:text-5xl lg:text-[56px] mb-3" style={STAT_COUNTER_STYLE}>
                   <AnimatedCounter value={50} suffix="+" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">
@@ -144,7 +152,7 @@ export default function StatsSection() {
                 }}
                 className="flex flex-col"
               >
-                <div className="text-4xl md:text-5xl lg:text-[56px] tracking-tight mb-3" style={SERIF_STYLE}>
+                <div className="text-4xl md:text-5xl lg:text-[56px] mb-3" style={STAT_COUNTER_STYLE}>
                   <AnimatedCounter value={15} suffix="+" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">
@@ -160,7 +168,7 @@ export default function StatsSection() {
                 }}
                 className="flex flex-col"
               >
-                <div className="text-4xl md:text-5xl lg:text-[56px] tracking-tight mb-3" style={SERIF_STYLE}>
+                <div className="text-4xl md:text-5xl lg:text-[56px] mb-3" style={STAT_COUNTER_STYLE}>
                   <AnimatedCounter value={24} suffix="/7" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">

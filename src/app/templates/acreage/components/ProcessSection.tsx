@@ -43,7 +43,7 @@ export default function ProcessSection() {
   return (
     <section
       id="process"
-      className="bg-black text-white py-8 md:py-24 px-6 md:px-12 lg:px-[120px] w-full border-t border-white/10 overflow-hidden"
+      className="bg-black text-white py-16 md:py-24 px-6 md:px-8 lg:px-[120px] w-full border-t border-white/10 overflow-hidden"
     >
       <div className="mx-auto w-full max-w-[1440px]">
         <motion.div

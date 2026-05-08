@@ -3,12 +3,19 @@ import { Check } from "lucide-react";
 import Typewriter from "./Typewriter";
 
 /* ═══════════════════════════════════════════════════════════════
-   PricingSection — three engagement tiers on white. Middle tier
-   inverts to black to draw the eye. CTA buttons echo the global
-   "rounded-full · black on white" Acreage button vocabulary, with
-   #27BD09 (the green used in ContactSection on submit) as hover.
+   PricingSection — three engagement tiers over a looping video
+   background. Section is dark-mode: glassy white-on-dark cards with
+   the middle tier inverted to white to draw the eye. CTA hover keeps
+   the #27BD09 green used in ContactSection on submit.
    ═══════════════════════════════════════════════════════════════ */
 
+const PRICING_BG_VIDEO =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260506_031045_0e1165dd-ab48-46e3-ad3d-5fe77f217647.mp4";
+
+const TITLE_STYLE = {
+  fontFamily: "'DM Sans', sans-serif",
+  fontVariationSettings: "'opsz' 14",
+} as const;
 const SERIF_STYLE = { fontFamily: "'Instrument Serif', serif" } as const;
 const NUMERAL_STYLE = { fontFamily: "'DM Sans', sans-serif" } as const;
 
@@ -71,9 +78,25 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="w-full bg-white text-black py-8 md:py-24 px-6 md:px-12 lg:px-[120px] flex flex-col justify-center overflow-hidden"
+      className="relative w-full bg-black text-white py-8 md:py-24 px-6 md:px-12 lg:px-[48px] flex flex-col justify-center overflow-hidden"
     >
-      <div className="w-full max-w-[1440px] mx-auto">
+      {/* Background video + dark overlay */}
+      <div aria-hidden className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="h-full w-full object-cover"
+        >
+          <source src={PRICING_BG_VIDEO} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/65" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -89,7 +112,8 @@ export default function PricingSection() {
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
             }}
-            className="text-sm md:text-base mb-6 font-medium tracking-wide text-black/60 uppercase"
+            className="text-sm md:text-base mb-6 font-medium tracking-wide text-white/60 uppercase"
+            style={TITLE_STYLE}
           >
             <Typewriter text="Pricing" delay={0} speed={0.015} />
           </motion.h2>
@@ -99,7 +123,7 @@ export default function PricingSection() {
               hidden: { scaleX: 0 },
               visible: { scaleX: 1, transition: { duration: 0.8, ease: "easeOut" } },
             }}
-            className="w-full h-[1px] bg-[#D9D9D9] mb-12 md:mb-20 origin-left"
+            className="w-full h-[1px] bg-white/15 mb-12 md:mb-20 origin-left"
           />
 
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16">
@@ -109,6 +133,7 @@ export default function PricingSection() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
               }}
               className="text-[clamp(1.5rem,4vw,3.5rem)] font-medium tracking-tight leading-[1.1] max-w-[820px]"
+              style={TITLE_STYLE}
             >
               <Typewriter text="Engagements priced for the " delay={0} speed={0.015} />
               <span className="italic font-normal" style={SERIF_STYLE}>
@@ -121,7 +146,7 @@ export default function PricingSection() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
               }}
-              className="text-sm md:text-base text-black/60 font-light leading-relaxed max-w-[320px]"
+              className="text-sm md:text-base text-white/60 font-light leading-relaxed max-w-[320px]"
             >
               <Typewriter
                 text="Indicative ranges. Final scope is built per field after a 30-minute discovery call."
@@ -139,10 +164,8 @@ export default function PricingSection() {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
                 }}
-                className={`flex flex-col p-8 md:p-10 border ${
-                  tier.highlighted
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-black border-[#D9D9D9]"
+                className={`liquid-glass liquid-glass--nav rounded-2xl shadow-2xl flex flex-col p-8 md:p-10 text-white ${
+                  tier.highlighted ? "liquid-glass--popover" : ""
                 }`}
               >
                 <div className="flex items-baseline justify-between mb-2 gap-3">
@@ -156,29 +179,19 @@ export default function PricingSection() {
                   )}
                 </div>
 
-                <p
-                  className={`text-sm font-light leading-relaxed mb-8 ${
-                    tier.highlighted ? "text-white/70" : "text-black/60"
-                  }`}
-                >
+                <p className="text-sm font-light leading-relaxed mb-8 text-white/60">
                   {tier.tagline}
                 </p>
 
                 <div className="flex items-baseline gap-2 mb-8">
                   <span
-                    className="text-5xl md:text-6xl tracking-tight"
+                    className="text-5xl md:text-6xl tracking-[-0.8px]"
                     style={NUMERAL_STYLE}
                   >
                     {tier.price}
                   </span>
                   {tier.unit && (
-                    <span
-                      className={`text-sm ${
-                        tier.highlighted ? "text-white/60" : "text-black/60"
-                      }`}
-                    >
-                      {tier.unit}
-                    </span>
+                    <span className="text-sm text-white/60">{tier.unit}</span>
                   )}
                 </div>
 
@@ -189,28 +202,20 @@ export default function PricingSection() {
                       className="flex items-start gap-3 text-sm leading-relaxed"
                     >
                       <Check
-                        className={`w-4 h-4 mt-0.5 shrink-0 ${
-                          tier.highlighted ? "text-[#27BD09]" : "text-black"
-                        }`}
+                        className="w-4 h-4 mt-0.5 shrink-0 text-[#27BD09]"
                         strokeWidth={2.25}
                       />
-                      <span
-                        className={
-                          tier.highlighted ? "text-white/85" : "text-black/80"
-                        }
-                      >
-                        {f}
-                      </span>
+                      <span className="text-white/85">{f}</span>
                     </li>
                   ))}
                 </ul>
 
                 <a
                   href="#contact"
-                  className={`mt-auto self-start rounded-full px-6 py-2.5 text-sm tracking-wide transition-colors duration-300 ${
+                  className={`mt-auto self-start rounded-full px-6 py-2.5 text-sm tracking-wide transition-colors duration-300 backdrop-blur-sm ${
                     tier.highlighted
                       ? "bg-white text-black hover:bg-[#27BD09] hover:text-white"
-                      : "bg-black text-white hover:bg-[#27BD09]"
+                      : "border border-white/30 bg-white/[0.04] text-white hover:bg-white hover:text-black"
                   }`}
                 >
                   {tier.cta}

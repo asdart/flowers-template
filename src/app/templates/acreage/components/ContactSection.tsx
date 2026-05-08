@@ -80,7 +80,8 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="w-full bg-white text-black py-24 px-6 md:px-12 lg:px-[120px] flex flex-col items-center justify-center"
+      data-acreage-nav-surface="light"
+      className="w-full bg-white text-black py-16 md:py-24 px-6 md:px-12 lg:px-[120px] flex flex-col items-center justify-center"
     >
       <motion.div
         initial="hidden"
@@ -92,7 +93,7 @@ export default function ContactSection() {
         }}
         className="w-full max-w-3xl mx-auto flex flex-col items-center"
       >
-        <div className="text-center mb-16 w-full">
+        <div className="text-center mb-12 md:mb-16 w-full">
           <h2 className="text-[clamp(1.5rem,4vw,3.5rem)] font-medium tracking-tight mb-6 leading-[1.1]">
             <span className="text-black italic font-normal" style={SERIF_STYLE}>
               <Typewriter text="Let's grow!" delay={0} speed={0.015} />
@@ -148,7 +149,7 @@ export default function ContactSection() {
           <motion.div variants={formVariants} className="mt-8 flex justify-center">
             <button
               type="submit"
-              className="bg-black text-white px-6 py-2.5 rounded-full hover:bg-[#27BD09] transition-colors duration-300 text-sm tracking-wide"
+              className="w-full sm:w-auto bg-black text-white px-6 py-3 sm:py-2.5 rounded-full hover:bg-[#27BD09] transition-colors duration-300 text-sm tracking-wide"
             >
               Send Message
             </button>

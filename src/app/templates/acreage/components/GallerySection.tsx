@@ -32,14 +32,14 @@ export default function GallerySection() {
   return (
     <section
       id="gallery"
-      className="relative box-border flex h-screen min-h-0 w-full flex-col items-center justify-center overflow-hidden border-t border-white/10 bg-black px-6 py-24 text-white md:px-8"
+      className="relative box-border flex min-h-svh w-full flex-col items-center justify-center overflow-hidden border-t border-white/10 bg-black px-6 py-16 text-white md:px-8 md:py-24"
     >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black"
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1100px] shrink-0 px-0 text-center pb-6 md:pb-16">
+      <div className="relative z-10 mx-auto w-full max-w-[1100px] shrink-0 px-0 text-center pb-10 md:pb-16">
         <motion.div
           initial="hidden"
           whileInView="visible"

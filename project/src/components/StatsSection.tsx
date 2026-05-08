@@ -28,7 +28,7 @@ export default function StatsSection() {
   return (
     <section id="stats" className="bg-black text-white py-8 md:py-24 px-6 md:px-12 lg:px-[120px] w-full border-t border-white/10 overflow-hidden">
       <div className="w-full max-w-[1440px] mx-auto">
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-[160px] items-stretch">
+        <div className="flex flex-col lg:flex-row gap-16 items-stretch">
           
           {/* Left Column: Title, Subtitle & Stats */}
           <motion.div 
@@ -45,8 +45,11 @@ export default function StatsSection() {
             className="flex-1 flex flex-col justify-start"
           >
             <h2 className="text-[clamp(1.5rem,4vw,3.5rem)] font-medium tracking-tight mb-6 leading-[1.1] w-[590px] max-w-full">
-              <Typewriter text="Powering Harvests" delay={0} speed={0.012} /><br />
-              <Typewriter text="that " delay={0.25} speed={0.012} /><span className="font-dm-serif italic font-normal"><Typewriter text="Maximize Your Yield" delay={0.35} speed={0.012} /></span>
+              <span className="not-italic" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <Typewriter text="Powering Harvests" delay={0} speed={0.012} /><br />
+                <Typewriter text="that " delay={0.25} speed={0.012} />
+              </span>
+              <span className="font-dm-serif italic font-normal"><Typewriter text="Maximize Your Yield" delay={0.35} speed={0.012} /></span>
             </h2>
             <p className="text-base md:text-lg text-white/40 leading-relaxed font-light max-w-lg whitespace-normal mb-16">
               <Typewriter text="For over a decade, the region's most demanding agricultural operations have relied on our modern machinery and skilled crews to secure their crops efficiently and reduce loss." delay={0.1} speed={0.012} />
@@ -62,7 +65,10 @@ export default function StatsSection() {
             >
               {/* Stat 1 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } } }} className="flex flex-col">
-                <div className="text-4xl md:text-5xl lg:text-[56px] font-dm-serif tracking-tight mb-3">
+                <div
+                  className="text-4xl md:text-5xl lg:text-[56px] mb-3 font-extralight tracking-[-0.8px]"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
                   <AnimatedCounter value={500} suffix="K+" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">
@@ -72,7 +78,10 @@ export default function StatsSection() {
 
               {/* Stat 2 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } } }} className="flex flex-col">
-                <div className="text-4xl md:text-5xl lg:text-[56px] font-dm-serif tracking-tight mb-3">
+                <div
+                  className="text-4xl md:text-5xl lg:text-[56px] mb-3 font-extralight tracking-[-0.8px]"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
                   <AnimatedCounter value={99.8} decimals={1} suffix="%" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">
@@ -82,7 +91,10 @@ export default function StatsSection() {
 
               {/* Stat 3 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } } }} className="flex flex-col">
-                <div className="text-4xl md:text-5xl lg:text-[56px] font-dm-serif tracking-tight mb-3">
+                <div
+                  className="text-4xl md:text-5xl lg:text-[56px] mb-3 font-extralight tracking-[-0.8px]"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
                   <AnimatedCounter value={50} suffix="+" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">
@@ -92,7 +104,10 @@ export default function StatsSection() {
 
               {/* Stat 4 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } } }} className="flex flex-col">
-                <div className="text-4xl md:text-5xl lg:text-[56px] font-dm-serif tracking-tight mb-3">
+                <div
+                  className="text-4xl md:text-5xl lg:text-[56px] mb-3 font-extralight tracking-[-0.8px]"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
                   <AnimatedCounter value={15} suffix="+" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">
@@ -102,7 +117,10 @@ export default function StatsSection() {
 
               {/* Stat 5 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } } }} className="flex flex-col">
-                <div className="text-4xl md:text-5xl lg:text-[56px] font-dm-serif tracking-tight mb-3">
+                <div
+                  className="text-4xl md:text-5xl lg:text-[56px] mb-3 font-extralight tracking-[-0.8px]"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
                   <AnimatedCounter value={24} suffix="/7" />
                 </div>
                 <div className="text-[10px] md:text-xs font-semibold text-white/40 uppercase tracking-wider">

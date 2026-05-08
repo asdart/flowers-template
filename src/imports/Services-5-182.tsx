@@ -3,7 +3,7 @@ import imgFrame2147225845 from "figma:asset/31706ffb1ad06daf4781e92ab63fa9eb261c
 function Services1() {
   return (
     <div className="content-stretch flex flex-col items-start justify-center leading-[32px] py-px relative shrink-0 text-[24px] tracking-[-1px] w-full whitespace-nowrap" data-name="Services">
-      <p className="font-['Zodiak_Variable:Light_Italic',sans-serif] font-light italic relative shrink-0 text-[#737373]">Our</p>
+      <p className="font-['DM_Sans',sans-serif] font-light italic relative shrink-0 text-[#737373]">Our</p>
       <p className="font-['Instrument_Sans:Regular',sans-serif] font-normal relative shrink-0 text-black text-center" style={{ fontVariationSettings: "'wdth' 100" }}>
         Services
       </p>
@@ -33,7 +33,7 @@ function LeftColumn() {
 function Container2() {
   return (
     <div className="content-stretch flex flex-col h-full items-start relative shrink-0 w-[32px]" data-name="Container">
-      <p className="font-['Zodiak_Variable:Regular',sans-serif] font-normal leading-[28px] relative shrink-0 text-[#a1a1a1] text-[20px] whitespace-nowrap">01</p>
+      <p className="font-['DM_Sans',sans-serif] font-normal leading-[28px] relative shrink-0 text-[#a1a1a1] text-[20px] whitespace-nowrap">01</p>
     </div>
   );
 }
@@ -41,7 +41,7 @@ function Container2() {
 function Container3() {
   return (
     <div className="content-stretch flex flex-[1_0_0] flex-col font-normal gap-[8px] items-start min-w-px relative" data-name="Container">
-      <p className="font-['Zodiak_Variable:Italic',sans-serif] italic leading-[32px] relative shrink-0 text-[24px] text-black tracking-[-1px] w-full">Wedding Floristry</p>
+      <p className="font-['DM_Sans',sans-serif] italic leading-[32px] relative shrink-0 text-[24px] text-black tracking-[-1px] w-full">Wedding Floristry</p>
       <p className="font-['Instrument_Sans:Regular',sans-serif] leading-[24px] relative shrink-0 text-[#737373] text-[16px] tracking-[-0.4395px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Bespoke bridal bouquets, breathtaking arches, and tablescapes tailored to tell your unique love story.
       </p>
@@ -65,7 +65,7 @@ function Frame1() {
 function Container4() {
   return (
     <div className="content-stretch flex flex-col h-full items-start relative shrink-0 w-[32px]" data-name="Container">
-      <p className="font-['Zodiak_Variable:Regular',sans-serif] font-normal leading-[28px] relative shrink-0 text-[#a1a1a1] text-[20px] whitespace-nowrap">02</p>
+      <p className="font-['DM_Sans',sans-serif] font-normal leading-[28px] relative shrink-0 text-[#a1a1a1] text-[20px] whitespace-nowrap">02</p>
     </div>
   );
 }
@@ -73,7 +73,7 @@ function Container4() {
 function Container5() {
   return (
     <div className="content-stretch flex flex-[1_0_0] flex-col font-normal gap-[8px] items-start min-w-px relative" data-name="Container">
-      <p className="font-['Zodiak_Variable:Italic',sans-serif] italic leading-[32px] relative shrink-0 text-[24px] text-black tracking-[-1px] w-full">Event Styling</p>
+      <p className="font-['DM_Sans',sans-serif] italic leading-[32px] relative shrink-0 text-[24px] text-black tracking-[-1px] w-full">Event Styling</p>
       <p className="font-['Instrument_Sans:Regular',sans-serif] leading-[24px] relative shrink-0 text-[#737373] text-[16px] tracking-[-0.4395px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Transforming venues with immersive, structural floral installations that leave a lasting impression on your guests.
       </p>
@@ -97,7 +97,7 @@ function Frame2() {
 function Container6() {
   return (
     <div className="content-stretch flex flex-col h-full items-start relative shrink-0 w-[32px]" data-name="Container">
-      <p className="font-['Zodiak_Variable:Regular',sans-serif] font-normal leading-[28px] relative shrink-0 text-[#a1a1a1] text-[20px] whitespace-nowrap">03</p>
+      <p className="font-['DM_Sans',sans-serif] font-normal leading-[28px] relative shrink-0 text-[#a1a1a1] text-[20px] whitespace-nowrap">03</p>
     </div>
   );
 }
@@ -105,7 +105,7 @@ function Container6() {
 function Container7() {
   return (
     <div className="content-stretch flex flex-[1_0_0] flex-col font-normal gap-[8px] items-start min-w-px relative" data-name="Container">
-      <p className="font-['Zodiak_Variable:Italic',sans-serif] italic leading-[32px] relative shrink-0 text-[24px] text-black tracking-[-1px] w-full">Corporate Subscriptions</p>
+      <p className="font-['DM_Sans',sans-serif] italic leading-[32px] relative shrink-0 text-[24px] text-black tracking-[-1px] w-full">Corporate Subscriptions</p>
       <p className="font-['Instrument_Sans:Regular',sans-serif] leading-[24px] relative shrink-0 text-[#737373] text-[16px] tracking-[-0.4395px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Weekly curated floral arrangements that breathe life, elegance, and creativity into offices and retail spaces.
       </p>
@@ -129,7 +129,7 @@ function Frame3() {
 function Container8() {
   return (
     <div className="content-stretch flex flex-col h-full items-start relative shrink-0 w-[32px]" data-name="Container">
-      <p className="font-['Zodiak_Variable:Regular',sans-serif] font-normal leading-[28px] relative shrink-0 text-[#a1a1a1] text-[20px] whitespace-nowrap">04</p>
+      <p className="font-['DM_Sans',sans-serif] font-normal leading-[28px] relative shrink-0 text-[#a1a1a1] text-[20px] whitespace-nowrap">04</p>
     </div>
   );
 }
@@ -137,7 +137,7 @@ function Container8() {
 function Container9() {
   return (
     <div className="content-stretch flex flex-[1_0_0] flex-col font-normal gap-[8px] items-start min-w-px relative" data-name="Container">
-      <p className="font-['Zodiak_Variable:Italic',sans-serif] italic leading-[32px] relative shrink-0 text-[24px] text-black tracking-[-1px] w-full">{`Editorial & Workshops`}</p>
+      <p className="font-['DM_Sans',sans-serif] italic leading-[32px] relative shrink-0 text-[24px] text-black tracking-[-1px] w-full">{`Editorial & Workshops`}</p>
       <p className="font-['Instrument_Sans:Regular',sans-serif] leading-[24px] relative shrink-0 text-[#737373] text-[16px] tracking-[-0.4395px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Botanical styling for photoshoots, brand campaigns, and intimate masterclasses for aspiring florists.
       </p>
