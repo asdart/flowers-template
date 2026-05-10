@@ -10,7 +10,8 @@ export type TemplateId =
   | "minimal"
   | "poison"
   | "exploration"
-  | "acreage";
+  | "acreage"
+  | "scrollgrid";
 
 const dropdownLinks = [
   { label: "Gallery", href: "#gallery", description: "Selected blooms" },
@@ -35,6 +36,7 @@ const templateOptions: { id: TemplateId; label: string; description: string }[] 
   { id: "poison", label: "Poison Bloom", description: "Editorial cream · Fraunces Thin wordmarks" },
   { id: "exploration", label: "Exploration", description: "Mask distortion · interactive WebGL" },
   { id: "acreage", label: "Acreage Ag", description: "Precision farming · video hero · Barlow" },
+  { id: "scrollgrid", label: "Scroll Grid", description: "Codrops · GSAP image grid" },
 ];
 
 type NavbarProps = {
@@ -289,6 +291,46 @@ const themes: Record<TemplateId, Theme> = {
     mobileInactive: "text-white/75 hover:text-white",
     mobileActive: "text-white",
     navLinkFontClass: "font-sans uppercase tracking-[0.18em]",
+    desktopLayout: "inline",
+    linksWrapperClass: "flex items-center gap-2",
+    pillTriggerPadding: "pl-3 pr-2.5 py-1.5",
+    pillLinkPadding: "px-3 py-1.5",
+    navTopPx: 0,
+  },
+  scrollgrid: {
+    text: "text-[#111]",
+    brand: {
+      fontClass: "font-sans font-normal",
+      sizeClass: "text-base",
+      trackingClass: "tracking-normal",
+      caseClass: "uppercase",
+      label: "Scroll Grid",
+    },
+    pill:
+      "rounded-full bg-[#d8d2cd]/65 text-xs font-normal uppercase leading-none text-[#b41717] backdrop-blur-sm transition-colors hover:text-black hover:bg-[#d8d2cd]/90",
+    pillArrowFill: "#b41717",
+    divider: "",
+    ctaButton:
+      "rounded-full border border-[#b41717]/50 bg-[#d8d2cd]/55 px-3.5 py-1.5 text-xs font-normal uppercase leading-none text-[#b41717] backdrop-blur-sm transition-colors hover:bg-[#b41717] hover:text-[#d8d2cd]",
+    dropdownPanel:
+      "rounded-2xl border border-[#111]/10 bg-[#d8d2cd]/88 shadow-xl backdrop-blur-2xl backdrop-saturate-150",
+    dropdownLabel: "font-sans text-sm uppercase text-[#111]",
+    dropdownDescription:
+      "text-[11px] leading-tight text-[#111]/55 transition-colors group-hover:text-[#111]/80",
+    dropdownItemHover: "hover:bg-[#111]/8",
+    dropdownActiveBg: "bg-[#111]/10",
+    activePill:
+      "rounded-full bg-[#b41717] px-1.5 py-0.5 text-[9px] font-normal not-italic uppercase tracking-widest text-[#d8d2cd]",
+    mobileButton:
+      "relative z-50 flex h-10 w-10 items-center justify-center rounded-full border border-[#111]/20 bg-[#d8d2cd]/70 text-[#111] backdrop-blur-sm transition-colors hover:bg-[#d8d2cd]",
+    mobileBar: "bg-[#111]",
+    mobileOverlay: "bg-[#d8d2cd]/95 text-[#111] backdrop-blur-xl",
+    mobileLinkBorder: "border-[#111]/10",
+    mobileLabel: "font-sans text-3xl uppercase text-[#111]",
+    mobileSectionLabel: "text-[11px] uppercase tracking-[0.3em] text-[#111]/45",
+    mobileInactive: "text-[#111]/75 hover:text-[#111]",
+    mobileActive: "text-[#111]",
+    navLinkFontClass: "font-sans uppercase",
     desktopLayout: "inline",
     linksWrapperClass: "flex items-center gap-2",
     pillTriggerPadding: "pl-3 pr-2.5 py-1.5",

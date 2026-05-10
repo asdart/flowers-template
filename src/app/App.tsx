@@ -17,6 +17,7 @@ import { MinimalTemplate } from "./templates/MinimalTemplate";
 import { PoisonTemplate } from "./templates/PoisonTemplate";
 import { ExplorationTemplate } from "./templates/ExplorationTemplate";
 import { AcreageTemplate } from "./templates/AcreageTemplate";
+import { ScrollGridTemplate } from "./templates/ScrollGridTemplate";
 
 function WildeFlowerTemplate() {
   return (
@@ -46,6 +47,7 @@ const templateIds: TemplateId[] = [
   "poison",
   "exploration",
   "acreage",
+  "scrollgrid",
 ];
 
 export default function App() {
@@ -79,6 +81,8 @@ export default function App() {
         <ExplorationTemplate />
       ) : template === "acreage" ? (
         <AcreageTemplate />
+      ) : template === "scrollgrid" ? (
+        <ScrollGridTemplate />
       ) : (
         <OrlaTemplate />
       )}
